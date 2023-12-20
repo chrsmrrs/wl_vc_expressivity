@@ -30,11 +30,12 @@ def linear_svm_evaluation(all_feature_matrices, classes, num_repetitions=10,
     # All acc. over all folds and repetitions.
     test_accuracies_complete = []
 
-    margins = []
+    margins_all = []
 
     for i in range(num_repetitions):
         # Test acc. over all folds.
         test_accuracies = []
+        margins = []
         kf = KFold(n_splits=10, shuffle=True)
 
         for train_index, test_index in kf.split(list(range(len(classes)))):
@@ -81,10 +82,10 @@ def linear_svm_evaluation(all_feature_matrices, classes, num_repetitions=10,
             if all_std:
                 test_accuracies_complete.append(best_test)
         test_accuracies_all.append(float(np.array(test_accuracies).mean()))
-
+        margins_all.append(float(np.array(margins).mean()))
     if all_std:
         return (np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std(),
                 np.array(test_accuracies_complete).std())
     else:
-        return (np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std(), np.array(margins).mean(),
-                np.array(margins).std())
+        return (np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std(), np.array(margins_all).mean(),
+                np.array(margins_all).std())

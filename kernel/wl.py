@@ -1,8 +1,6 @@
+import graph_tool as gt
 import numpy as np
 from graph_tool.all import *
-import graph_tool as gt
-
-
 
 
 # Simple implementation of 1-WL_F.
