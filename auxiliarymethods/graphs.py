@@ -15,7 +15,18 @@ def create_cycle(n):
 
     return g
 
+# Create clique on n vertices.
+def create_clique(n):
+    g = Graph(directed=False)
 
+    for i in range(n):
+        g.add_vertex()
+
+    for i in range(n):
+        for j in range(i+1,n):
+            g.add_edge(i,j)
+
+    return g
 
 
 

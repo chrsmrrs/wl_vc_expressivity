@@ -1,89 +1,88 @@
 import os.path as osp
 
+import graph_tool as gt
 import numpy as np
 import torch
 import torch.nn.functional as F
-import torch_geometric.transforms as T
+from graph_tool.all import *
 from sklearn.model_selection import KFold
 from sklearn.model_selection import train_test_split
 from torch_geometric.data import DataLoader
+from torch_geometric.data import (InMemoryDataset, Data)
 from torch_geometric.datasets import TUDataset
 from torch_geometric.utils import degree
+from auxiliarymethods.auxiliary_methods import read_txt
 
-from torch_geometric.data import (InMemoryDataset, Data)
-
-import torch
-from torch_geometric.nn import MessagePassing
-import torch.nn.functional as F
-
-from graph_tool.all import *
-import graph_tool as gt
 
 class wl_f(InMemoryDataset):
-    def __init__(self, root, dataset, f, hidden, transform=None, pre_transform=None,
+    def __init__(self, root, dataset, subgraphs, hidden, transform=None, pre_transform=None,
                  pre_filter=None):
         self.dataset = dataset
-        self.f = f
+        self.subgraphs = subgraphs
         self.hidden = hidden
         super(wl_f, self).__init__(root, transform, pre_transform, pre_filter)
         self.data, self.slices = torch.load(self.processed_paths[0])
 
-
     @property
     def raw_file_names(self):
-        return self.dataset
+        return self.dataset + "F"
 
     @property
     def processed_file_names(self):
-        return self.dataset
+        return self.dataset + "F"
 
     def download(self):
         pass
 
     def process(self):
-        path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'data', 'TU')
-        dataset = TUDataset(path, self.dataset).shuffle()
+        num_subgraphs = len(self.subgraphs)
+        color_manager = {}
+        c = 0
 
-        graph_db = []
-        classes = []
+        graph_db, classes = read_txt(self.dataset)
 
-        for data in dataset:
-            classes.append(int(data.y))
-            edge_index = data.edge_index
+        classes_new = []
 
-            v_1 = edge_index[0].numpy()
-            v_2 = edge_index[1].numpy()
+        for l in classes:
+            if l == -1:
+                classes_new.append(0)
+            else:
+                classes_new.append(1)
 
-            g = Graph(directed=False)
-            num_vertices = max(v_1)
-
-            for i in range(num_vertices):
-                g.add_vertex()
-
-            for i,j in zip(v_1,v_2):
-                g.add_edge(i,j)
-
-            graph_db.append(g)
-
-        classes =  np.array(classes)
+        classes = classes_new
 
         for g in graph_db:
             g.vp.nl = g.new_vertex_property("int")
+            g.vp.labels = g.new_vertex_property("vector<int>")
 
         # Set all node labels to uniform color.
         for i, g in enumerate(graph_db):
             for v in g.vertices():
                 g.vp.nl[v] = 0
+                g.vp.labels[v] = [0] * num_subgraphs
 
-        # Label node according to f.
+        # Label node according to subgraphs.
         for i, g in enumerate(graph_db):
-            # Compute subgraph isomorphisms from f to g.
-            maps = gt.topology.subgraph_isomorphism(self.f, g, induced=True)
+            # Iterate over subgraphs.
+            for s, f in enumerate(self.subgraphs):
+                # Compute subgraph isomorphisms from f to g.
+                maps = gt.topology.subgraph_isomorphism(f, g, induced=True)
 
-            for m in maps:
-                for v in self.f.vertices():
-                    # TODO change again
-                    g.vp.nl[m[v]] += 1
+                for m in maps:
+                    for v in f.vertices():
+                        g.vp.labels[m[v]][s] += 1
+
+        # Compress vector labels.
+        for i, g in enumerate(graph_db):
+            for v in g.vertices():
+                h = hash(tuple(g.vp.labels[v]))
+
+                if h in color_manager:
+                    g.vp.nl[v] = color_manager[h]
+                else:
+                    color_manager[h] = c
+                    g.vp.nl[v] = c
+                    c += 1
 
         matrices = []
         labels = []
@@ -91,25 +90,25 @@ class wl_f(InMemoryDataset):
             a = []
             b = []
             x = []
-            for (i,j) in g.edges():
+            for (i, j) in g.edges():
                 a.append(int(i))
                 b.append(int(j))
 
             for v in g.vertices():
                 x.append(g.vp.nl[v])
 
-            edge_index = torch.tensor([a,b])
+            edge_index = torch.tensor([a, b])
             x = np.array(x)
 
             matrices.append(edge_index)
             labels.append(x)
 
-
-
         data_list = []
         for i, m in enumerate(matrices):
             data = Data()
             data.edge_index = m
+
+            print(labels[i])
 
             one_hot = np.eye(self.hidden[-1])[labels[i]]
             data.x = torch.from_numpy(one_hot).to(torch.float)
@@ -134,7 +133,6 @@ class MyTransform(object):
         for key, item in data:
             new_data[key] = item
         return new_data
-
 
 
 class NormalizedDegree(object):
@@ -176,11 +174,12 @@ def test(loader, model, device):
 
 
 # 10-CV for GNN training and hyperparameter selection.
-def gnn_evaluation(gnn, f, ds_name, layers, hidden, max_num_epochs=200, batch_size=128, start_lr=0.01, min_lr = 0.000001, factor=0.5, patience=5,
-                       num_repetitions=10, all_std=True):
+def gnn_evaluation(gnn, subgraphs, ds_name, layers, hidden, max_num_epochs=200, batch_size=128, start_lr=0.01,
+                   min_lr=0.000001, factor=0.5, patience=5,
+                   num_repetitions=10, all_std=True):
     # Load dataset and shuffle.
     path = osp.join(osp.dirname(osp.realpath(__file__)), '.', 'data', ds_name)
-    dataset = wl_f(path, ds_name, f, hidden, transform=MyTransform()).shuffle()
+    dataset = wl_f(path, ds_name, subgraphs, hidden, transform=MyTransform()).shuffle()
 
     # Set device.
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

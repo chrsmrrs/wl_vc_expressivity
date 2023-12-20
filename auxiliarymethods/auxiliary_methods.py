@@ -6,7 +6,7 @@ import numpy as np
 from scipy import sparse as sp
 
 
-def read_txt(ds_name, regression=False):
+def read_txt(ds_name):
     pre = ""
 
     with open("datasets/" + pre + ds_name + "/" + ds_name + "_graph_indicator.txt", "r") as f:
@@ -100,39 +100,9 @@ def read_txt(ds_name, regression=False):
             g.ep.ea = l_ea[g_id]
 
     # Classes
-    if not regression:
-        with open("datasets/" + pre + ds_name + "/" + ds_name + "_graph_labels.txt", "r") as f:
-            classes = [int(i) for i in list(f)]
-        f.closed
-    else:
-        with open("datasets/" + pre + ds_name + "/" + ds_name + "_graph_attributes.txt", "r") as f:
-            classes = [float(i) for i in list(f)]
-        f.closed
+    with open("datasets/" + pre + ds_name + "/" + ds_name + "_graph_labels.txt", "r") as f:
+        classes = [int(i) for i in list(f)]
+    f.closed
 
     return graph_db, np.array(classes)
 
-
-# Cosine normalization for a gram matrix.
-def normalize_gram_matrix(gram_matrix):
-    n = gram_matrix.shape[0]
-    gram_matrix_norm = np.zeros([n, n], dtype=np.float64)
-
-    for i in range(0, n):
-        for j in range(i, n):
-            if not (gram_matrix[i][i] == 0.0 or gram_matrix[j][j] == 0.0):
-                g = gram_matrix[i][j] / m.sqrt(gram_matrix[i][i] * gram_matrix[j][j])
-                gram_matrix_norm[i][j] = g
-                gram_matrix_norm[j][i] = g
-
-    return gram_matrix_norm
-
-
-# Cosine normalization for sparse feature vectors, i.e., \ell_2 normalization.
-def normalize_feature_vector(feature_vectors):
-    n = feature_vectors.shape[0]
-
-    for i in range(0, n):
-        norm = sp.linalg.norm(feature_vectors[i])
-        feature_vectors[i] = feature_vectors[i] / norm
-
-    return feature_vectors
