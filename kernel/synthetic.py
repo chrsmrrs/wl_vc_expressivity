@@ -234,10 +234,11 @@ def create_random_graphs(num, n, p, t, f):
     for g in graph_db:
         maps = gt.topology.subgraph_isomorphism(f, g, induced=induced)
 
-        if len(maps) >= t:
-            classes.append(0)
-        else:
-            classes.append(1)
+        # if len(maps) >= t:
+        #     classes.append(0)
+        # else:
+        #     classes.append(1)
+        classes.append(len(maps))
 
     classes = np.array(classes)
 
@@ -329,48 +330,48 @@ if False:
 # Some hyperparameters.
 num_it = 6
 induced = True
-ps = [0.2, 0.3, 0.5]
+ps = [0.1, 0.2, 0.3, 0.4, 0.5]
 ts = [8, 16, 32]
 num_graphs = 1000
 num_vertices = 20
 
 # 1-WL.
 for p in ps:
-    for t in ts:
-        print(p, t)
-        for f in subgraphs:
-            graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, t, f)
-            gram_matrices = []
+    #for t in ts:
+    print(p)
+    for f in subgraphs:
+        graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, t, f)
+        gram_matrices = []
 
-            if len(np.unique(classes)) >= 2:
-                for i in range(num_it):
-                    gram_matrix = compute_wl(graph_db, i, compute_gram=False)
-                    gram_matrix = normalize_feature_vector_dense(gram_matrix)
-                    gram_matrices.append(gram_matrix)
+        if len(np.unique(classes)) >= 2:
+            for i in range(num_it):
+                gram_matrix = compute_wl(graph_db, i, compute_gram=False)
+                gram_matrix = normalize_feature_vector_dense(gram_matrix)
+                gram_matrices.append(gram_matrix)
 
-                acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 7])
-                print(acc, std, mrg, mrg_std)
-            else:
-                print("SKIP!")
-            print("#")
+            acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 7])
+            print(acc, std, mrg, mrg_std)
+        else:
+            print("SKIP!")
+        print("#")
 
 print("###")
 
 for p in ps:
-    for t in ts:
-        print(p, t)
-        for f in subgraphs:
-            graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, t, f)
-            gram_matrices = []
+    #for t in ts:
+    print(p)
+    for f in subgraphs:
+        graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, t, f)
+        gram_matrices = []
 
-            if len(np.unique(classes)) >= 2:
-                for i in range(num_it):
-                    gram_matrix = compute_wl_f(graph_db, [f], i, induced=induced, compute_gram=False)
-                    gram_matrix = normalize_feature_vector_dense(gram_matrix)
-                    gram_matrices.append(gram_matrix)
+        if len(np.unique(classes)) >= 2:
+            for i in range(num_it):
+                gram_matrix = compute_wl_f(graph_db, [f], i, induced=induced, compute_gram=False)
+                gram_matrix = normalize_feature_vector_dense(gram_matrix)
+                gram_matrices.append(gram_matrix)
 
-                acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 7])
-                print(acc, std, mrg, mrg_std)
-            else:
-                print("SKIP!")
-            print("#")
+            acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 7])
+            print(acc, std, mrg, mrg_std)
+        else:
+            print("SKIP!")
+        print("#")
