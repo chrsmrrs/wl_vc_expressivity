@@ -11,6 +11,8 @@ def warn(*args, **kwargs):
 import warnings
 warnings.warn = warn
 
+warnings.filterwarnings("ignore")
+
 def normalize_feature_vector_dense(feature_vectors):
     n = feature_vectors.shape[0]
 
