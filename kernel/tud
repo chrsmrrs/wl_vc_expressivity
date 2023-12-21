@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=time
-#SBATCH --output=tuud.txt
+#SBATCH --output=tud.txt
 #SBATCH --error=tud.txt
 #SBATCH --ntasks=1
 #SBATCH --time=72:00:00
