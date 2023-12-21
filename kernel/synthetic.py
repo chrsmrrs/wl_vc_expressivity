@@ -307,9 +307,9 @@ for n in [16, 32, 64, 128]:
         gram_matrix = normalize_feature_vector_dense(gram_matrix)
         gram_matrices.append(gram_matrix)
 
-    acc, std, mrg,mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 7])
+    acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 7])
     print(acc, std, mrg, mrg_std)
-
+    exit()
 print("###")
 
 for n in [16, 32, 64, 128]:

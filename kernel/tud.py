@@ -20,6 +20,8 @@ for i in range(3,7):
 
 datasets = ["ENZYMES", "MCF-7",  "MUTAG", "Mutagenicity", "PROTEINS", "PTC_FM", "PTC_MR"]
 
+datasets = ["MUTAG"]
+
 for ds in datasets:
     print(ds)
 

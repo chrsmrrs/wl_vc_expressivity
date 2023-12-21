@@ -3,7 +3,7 @@ from scipy import linalg as la
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 from sklearn.model_selection import train_test_split
-from sklearn.svm import LinearSVC
+from sklearn.svm import LinearSVC, SVC
 
 # Omit sklearn warnings.
 def warn(*args, **kwargs):
@@ -24,17 +24,17 @@ def normalize_feature_vector_dense(feature_vectors):
 
 # 10-CV for linear svm with sparse feature vectors and hyperparameter selection.
 def linear_svm_evaluation(all_feature_matrices, classes, num_repetitions=10,
-                          C=[10 ** 3, 10 ** 2, 10 ** 1, 10 ** 0, 10 ** -1, 10 ** -2, 10 ** -3], all_std=False):
+                          C=[10 ** 3, 10 ** 2, 10 ** 1, 10 ** 0, 10 ** -1, 10 ** -2, 10 ** -3]):
     # Acc. over all repetitions.
     test_accuracies_all = []
-    # All acc. over all folds and repetitions.
-    test_accuracies_complete = []
 
+    # Margins over all repetitions.
     margins_all = []
 
     for i in range(num_repetitions):
         # Test acc. over all folds.
         test_accuracies = []
+        # Margins over all folds.
         margins = []
         kf = KFold(n_splits=10, shuffle=True)
 
@@ -53,8 +53,8 @@ def linear_svm_evaluation(all_feature_matrices, classes, num_repetitions=10,
                 c_val = classes[val_index]
 
                 for c in C:
-                    # clf = SVC(C=c, kernel="linear", tol=0.001)
-                    clf = LinearSVC(C=c)
+                    clf = SVC(C=c, kernel="linear")
+                    #clf = LinearSVC(C=c, loss="hinge")
                     clf.fit(train, c_train)
                     val_acc = accuracy_score(c_val, clf.predict(val)) * 100.0
 
@@ -70,22 +70,20 @@ def linear_svm_evaluation(all_feature_matrices, classes, num_repetitions=10,
 
             c_train = classes[train_index]
             c_test = classes[test_index]
-            clf = LinearSVC(C=best_c)
+            clf = SVC(C=best_c, kernel="linear")
+            #clf = LinearSVC(C=best_c, loss="hinge")
             clf.fit(train, c_train)
 
-            # print(clf.coef_)
-            margins.append(1.0 / np.linalg.norm(clf.coef_))
+            m = 1.0 / np.linalg.norm(clf.coef_)
+            margins.append(m)
+            #print(m)
 
             best_test = accuracy_score(c_test, clf.predict(test)) * 100.0
 
             test_accuracies.append(best_test)
-            if all_std:
-                test_accuracies_complete.append(best_test)
+
         test_accuracies_all.append(float(np.array(test_accuracies).mean()))
         margins_all.append(float(np.array(margins).mean()))
-    if all_std:
-        return (np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std(),
-                np.array(test_accuracies_complete).std())
-    else:
-        return (np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std(), np.array(margins_all).mean(),
+
+    return (np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std(), np.array(margins_all).mean(),
                 np.array(margins_all).std())
