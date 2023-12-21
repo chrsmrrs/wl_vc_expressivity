@@ -340,7 +340,7 @@ for p in ps:
     #for t in ts:
     print(p)
     for f in subgraphs:
-        graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, t, f)
+        graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
         gram_matrices = []
 
         if len(np.unique(classes)) >= 2:
@@ -361,7 +361,7 @@ for p in ps:
     #for t in ts:
     print(p)
     for f in subgraphs:
-        graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, t, f)
+        graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
         gram_matrices = []
 
         if len(np.unique(classes)) >= 2:
