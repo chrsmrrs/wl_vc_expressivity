@@ -332,7 +332,7 @@ num_it = 6
 induced = True
 ps = [0.1, 0.2, 0.3, 0.4, 0.5]
 ts = [8, 16, 32]
-num_graphs = 1000
+num_graphs = 400
 num_vertices = 20
 
 # 1-WL.
