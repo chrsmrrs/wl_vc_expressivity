@@ -16,7 +16,7 @@ cliques = []
 for i in range(3,7):
     cliques.append(create_clique(i))
 
-datasets = ["ENZYMES", "MCF-7",  "MUTAG", "Mutagenicity", "PROTEINS", "PTC_FM", "PTC_MR"]
+datasets = ["ENZYMES","PTC_FM", "PTC_MR", "MUTAG",  "PROTEINS", "Mutagenicity",  "MCF-7",]
 
 for ds in datasets:
     print(ds)
