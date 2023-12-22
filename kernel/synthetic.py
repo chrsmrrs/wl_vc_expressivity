@@ -216,9 +216,8 @@ def create_er_graph(n, p):
         for j in range(i + 1, n):
             s = np.random.uniform()
 
-            if s <= p:
-                if not g.edge(i, j):
-                    g.add_edge(i, j)
+            if s <= p and not g.edge(i, j):
+                g.add_edge(i, j)
 
     return g
 
@@ -332,10 +331,32 @@ num_it = 6
 induced = True
 ps = [0.1, 0.2, 0.3, 0.4, 0.5]
 ts = [8, 16, 32]
-num_graphs = 400
+num_graphs = 1000
 num_vertices = 20
 
 # 1-WL.
+# for p in ps:
+#     #for t in ts:
+#     print(p)
+#     for f in subgraphs:
+#         graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
+#         gram_matrices = []
+#
+#         if len(np.unique(classes)) >= 2:
+#             for i in range(num_it):
+#                 print(i)
+#                 gram_matrix = compute_wl(graph_db, i, compute_gram=False)
+#                 gram_matrix = normalize_feature_vector_dense(gram_matrix)
+#                 gram_matrices.append(gram_matrix)
+#
+#             acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 7])
+#             print(acc, std, mrg, mrg_std)
+#         else:
+#             print("SKIP!")
+#         print("#")
+#
+# print("###")
+
 for p in ps:
     #for t in ts:
     print(p)
@@ -345,27 +366,7 @@ for p in ps:
 
         if len(np.unique(classes)) >= 2:
             for i in range(num_it):
-                gram_matrix = compute_wl(graph_db, i, compute_gram=False)
-                gram_matrix = normalize_feature_vector_dense(gram_matrix)
-                gram_matrices.append(gram_matrix)
-
-            acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 7])
-            print(acc, std, mrg, mrg_std)
-        else:
-            print("SKIP!")
-        print("#")
-
-print("###")
-
-for p in ps:
-    #for t in ts:
-    print(p)
-    for f in subgraphs:
-        graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
-        gram_matrices = []
-
-        if len(np.unique(classes)) >= 2:
-            for i in range(num_it):
+                print(i)
                 gram_matrix = compute_wl_f(graph_db, [f], i, induced=induced, compute_gram=False)
                 gram_matrix = normalize_feature_vector_dense(gram_matrix)
                 gram_matrices.append(gram_matrix)
