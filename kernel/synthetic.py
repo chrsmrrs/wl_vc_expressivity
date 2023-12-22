@@ -334,29 +334,27 @@ ts = [8, 16, 32]
 num_graphs = 1000
 num_vertices = 20
 
-# 1-WL.
-# for p in ps:
-#     #for t in ts:
-#     print(p)
-#     for f in subgraphs:
-#         graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
-#         gram_matrices = []
-#
-#         if len(np.unique(classes)) >= 2:
-#             for i in range(num_it):
-#                 print(i)
-#                 gram_matrix = compute_wl(graph_db, i, compute_gram=False)
-#                 gram_matrix = normalize_feature_vector_dense(gram_matrix)
-#                 gram_matrices.append(gram_matrix)
-#
-#             acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 7])
-#             print(acc, std, mrg, mrg_std)
-#         else:
-#             print("SKIP!")
-#         print("#")
-#
-# print("###")
+for p in ps:
+    #for t in ts:
+    print(p)
+    for f in subgraphs:
+        graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
+        gram_matrices = []
 
+        if len(np.unique(classes)) >= 2:
+            for i in range(num_it):
+                gram_matrix = compute_wl_f(graph_db, [f], i, induced=induced, compute_gram=False)
+                gram_matrix = normalize_feature_vector_dense(gram_matrix)
+                gram_matrices.append(gram_matrix)
+
+            acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 7])
+            print(acc, std, mrg, mrg_std)
+        else:
+            print("SKIP!")
+        print("#")
+print("###")
+
+# 1-WL.
 for p in ps:
     #for t in ts:
     print(p)
@@ -367,7 +365,7 @@ for p in ps:
         if len(np.unique(classes)) >= 2:
             for i in range(num_it):
                 print(i)
-                gram_matrix = compute_wl_f(graph_db, [f], i, induced=induced, compute_gram=False)
+                gram_matrix = compute_wl(graph_db, i, compute_gram=False)
                 gram_matrix = normalize_feature_vector_dense(gram_matrix)
                 gram_matrices.append(gram_matrix)
 
@@ -376,3 +374,5 @@ for p in ps:
         else:
             print("SKIP!")
         print("#")
+
+print("###")
