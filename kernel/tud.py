@@ -16,7 +16,7 @@ cliques = []
 for i in range(3,7):
     cliques.append(create_clique(i))
 
-datasets = ["ENZYMES","PTC_FM", "PTC_MR", "MUTAG",  "PROTEINS"] # "Mutagenicity",  "MCF-7",]
+datasets = ["ENZYMES","PTC_FM", "PTC_MR", "MUTAG",  "PROTEINS", "NCI1"] # "Mutagenicity",  "MCF-7",]
 
 for ds in datasets:
     print(ds)
@@ -29,7 +29,7 @@ for ds in datasets:
         gram_matrix = normalize_feature_vector_dense(gram_matrix)
         gram_matrices.append(gram_matrix)
 
-    acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10)
+    acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10, C = [10**7])
     print(acc, std, mrg, mrg_std)
     print("#")
 print("###")
@@ -62,7 +62,7 @@ for ds in datasets:
             gram_matrix = normalize_feature_vector_dense(gram_matrix)
             gram_matrices.append(gram_matrix)
 
-        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10)
+        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10, C = [10**7])
         print(acc, std, mrg, mrg_std)
         print("#")
 print("###")
