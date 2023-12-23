@@ -1,10 +1,10 @@
 import math as m
-import numpy as np
 
 import graph_tool as gt
+import numpy as np
 from graph_tool.all import *
 
-from auxiliarymethods.graphs import create_cycle, create_clique
+from auxiliarymethods.graphs import create_cycle
 from auxiliarymethods.svm import linear_svm_evaluation
 from auxiliarymethods.svm import normalize_feature_vector_dense
 
@@ -269,20 +269,21 @@ g_2.add_edge(c, d)
 g_2.add_edge(d, a)
 subgraphs.append(g_2)
 
-# C_4 with diagonal edge.
+# C_5.
 g_3 = Graph(directed=False)
 a = g_3.add_vertex()
 b = g_3.add_vertex()
 c = g_3.add_vertex()
 d = g_3.add_vertex()
+e = g_3.add_vertex()
 g_3.add_edge(a, b)
 g_3.add_edge(b, c)
 g_3.add_edge(c, d)
-g_3.add_edge(d, a)
-g_3.add_edge(a, c)
+g_3.add_edge(d, e)
+g_3.add_edge(e, a)
 subgraphs.append(g_3)
 
-# K_3 with edge.
+# K_4 with edge.
 g_4 = Graph(directed=False)
 a = g_4.add_vertex()
 b = g_4.add_vertex()
@@ -290,8 +291,10 @@ c = g_4.add_vertex()
 d = g_4.add_vertex()
 g_4.add_edge(a, b)
 g_4.add_edge(b, c)
-g_4.add_edge(c, a)
-g_4.add_edge(a, d)
+g_4.add_edge(c, d)
+g_4.add_edge(d, a)
+g_4.add_edge(a, c)
+g_4.add_edge(b, d)
 subgraphs.append(g_4)
 
 if False:
@@ -304,7 +307,6 @@ if False:
 
         gram_matrices = []
         for i in range(num_it):
-
             gram_matrix = compute_wl(graph_db, i, compute_gram=False)
             gram_matrix = normalize_feature_vector_dense(gram_matrix)
             gram_matrices.append(gram_matrix)
@@ -329,13 +331,13 @@ if False:
 # Some hyperparameters.
 num_it = 6
 induced = True
-ps = [0.1, 0.2, 0.3, 0.4, 0.5]
-ts = [8, 16, 32]
+ps = [0.1, 0.2, 0.3, 0.4]
+# ts = [8, 16, 32]
 num_graphs = 1000
 num_vertices = 20
 
 for p in ps:
-    #for t in ts:
+    # for t in ts:
     print(p)
     for f in subgraphs:
         graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
@@ -356,7 +358,7 @@ print("###")
 
 # 1-WL.
 for p in ps:
-    #for t in ts:
+    # for t in ts:
     print(p)
     for f in subgraphs:
         graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
