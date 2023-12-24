@@ -331,7 +331,7 @@ if False:
 # Some hyperparameters.
 num_it = 6
 induced = True
-ps = [0.1, 0.2, 0.3, 0.4]
+ps = [0.05, 0.1, 0.2, 0.3]
 # ts = [8, 16, 32]
 num_graphs = 1000
 num_vertices = 20
