@@ -25,7 +25,7 @@ def normalize_feature_vector_dense(feature_vectors):
 
 
 # 10-CV for linear svm with sparse feature vectors and hyperparameter selection.
-def linear_svm_evaluation(all_feature_matrices, classes, num_repetitions=10,
+def linear_svm_evaluation(all_feature_matrices, classes, num_iter, num_repetitions=10,
                           C=[10 ** 3, 10 ** 2, 10 ** 1, 10 ** 0, 10 ** -1, 10 ** -2, 10 ** -3]):
     # Acc. over all repetitions.
     test_accuracies_all = []
@@ -55,7 +55,7 @@ def linear_svm_evaluation(all_feature_matrices, classes, num_repetitions=10,
                 c_val = classes[val_index]
 
                 for c in C:
-                    clf = SVC(C=c, kernel="linear")
+                    clf = SVC(C=c, kernel="linear", max_iter=num_iter)
                     #clf = LinearSVC(C=c, loss="hinge")
                     clf.fit(train, c_train)
                     val_acc = accuracy_score(c_val, clf.predict(val)) * 100.0
@@ -72,7 +72,7 @@ def linear_svm_evaluation(all_feature_matrices, classes, num_repetitions=10,
 
             c_train = classes[train_index]
             c_test = classes[test_index]
-            clf = SVC(C=best_c, kernel="linear")
+            clf = SVC(C=best_c, kernel="linear", max_iter=num_iter)
             #clf = LinearSVC(C=best_c, loss="hinge")
             clf.fit(train, c_train)
 
