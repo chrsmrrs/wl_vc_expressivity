@@ -55,7 +55,7 @@ def linear_svm_evaluation(all_feature_matrices, classes, num_iter, num_repetitio
                 c_val = classes[val_index]
 
                 for c in C:
-                    clf = SVC(C=c, kernel="linear", max_iter=num_iter)
+                    clf = SVC(C=c, kernel="linear", max_iter=num_iter, cache_size=5000)
                     #clf = LinearSVC(C=c, loss="hinge")
                     clf.fit(train, c_train)
                     val_acc = accuracy_score(c_val, clf.predict(val)) * 100.0
@@ -72,7 +72,7 @@ def linear_svm_evaluation(all_feature_matrices, classes, num_iter, num_repetitio
 
             c_train = classes[train_index]
             c_test = classes[test_index]
-            clf = SVC(C=best_c, kernel="linear", max_iter=num_iter)
+            clf = SVC(C=best_c, kernel="linear", max_iter=num_iter, cache_size=5000)
             #clf = LinearSVC(C=best_c, loss="hinge")
             clf.fit(train, c_train)
 
