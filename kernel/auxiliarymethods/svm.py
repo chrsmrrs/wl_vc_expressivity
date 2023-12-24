@@ -4,6 +4,8 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 from sklearn.model_selection import train_test_split
 from sklearn.svm import LinearSVC, SVC
+from sklearn.preprocessing import Normalizer
+
 
 # Omit sklearn warnings.
 def warn(*args, **kwargs):
@@ -14,14 +16,10 @@ warnings.warn = warn
 warnings.filterwarnings("ignore")
 
 def normalize_feature_vector_dense(feature_vectors):
-    n = feature_vectors.shape[0]
 
-    for i in range(0, n):
-        norm = la.norm(feature_vectors[i])
+    transformer = Normalizer().fit(feature_vectors)
+    return transformer.transform(feature_vectors)
 
-        feature_vectors[i] = feature_vectors[i] / norm
-
-    return feature_vectors
 
 
 # 10-CV for linear svm with sparse feature vectors and hyperparameter selection.
