@@ -283,7 +283,7 @@ g_3.add_edge(d, e)
 g_3.add_edge(e, a)
 subgraphs.append(g_3)
 
-# K_4 with edge.
+# K_4.
 g_4 = Graph(directed=False)
 a = g_4.add_vertex()
 b = g_4.add_vertex()
@@ -325,7 +325,8 @@ if False:
             gram_matrix = normalize_feature_vector_dense(gram_matrix)
             gram_matrices.append(gram_matrix)
 
-        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10, C=[10 ** 10])
+        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
+                                                       C=[10 ** 10])
         print(acc, std, mrg, mrg_std)
 
 # Some hyperparameters.
@@ -336,46 +337,47 @@ ps = [0.05, 0.1, 0.2, 0.3]
 num_graphs = 1000
 num_vertices = 20
 
-# for p in ps:
-#     # for t in ts:
-#     print(p)
-#     for f in subgraphs:
-#         graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
-#         gram_matrices = []
-#
-#         if len(np.unique(classes)) >= 2:
-#             for i in range(num_it):
-#                 gram_matrix = compute_wl_f(graph_db, [f], i, induced=induced, compute_gram=False)
-#                 gram_matrix = normalize_feature_vector_dense(gram_matrix)
-#                 gram_matrices.append(gram_matrix)
-#
-#             acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10, C=[10 ** 10])
-#             print(acc, std, mrg, mrg_std)
-#         else:
-#             print("SKIP!")
-#         print("#")
-# print("###")
+datasets = []
 
-
-# 1-WL.
 for p in ps:
-    # for t in ts:
-    print(p)
     for f in subgraphs:
         graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
-        gram_matrices = []
+        datasets.append((graph_db, classes, p, f))
+        
+for (graph_db, classes, p, f) in datasets:
+    print(p)
+    gram_matrices = []
 
-        if len(np.unique(classes)) >= 2:
-            for i in range(num_it):
-                #print(i)
-                gram_matrix = compute_wl(graph_db, i, compute_gram=False)
-                gram_matrix = normalize_feature_vector_dense(gram_matrix)
-                gram_matrices.append(gram_matrix)
+    if len(np.unique(classes)) >= 2:
+        for i in range(num_it):
+            gram_matrix = compute_wl_f(graph_db, [f], i, induced=induced, compute_gram=False)
+            gram_matrix = normalize_feature_vector_dense(gram_matrix)
+            gram_matrices.append(gram_matrix)
 
-            acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10, C=[10 ** 10])
-            print(acc, std, mrg, mrg_std)
-        else:
-            print("SKIP!")
-        print("#")
+        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
+                                                       C=[10 ** 10])
+        print(acc, std, mrg, mrg_std)
+    else:
+        print("SKIP!")
+    print("#")
+print("###")
+
+# 1-WL.
+for (graph_db, classes, p, f) in datasets:
+    print(p)
+    gram_matrices = []
+
+    if len(np.unique(classes)) >= 2:
+        for i in range(num_it):
+            gram_matrix = compute_wl(graph_db, i, compute_gram=False)
+            gram_matrix = normalize_feature_vector_dense(gram_matrix)
+            gram_matrices.append(gram_matrix)
+
+        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
+                                                       C=[10 ** 10])
+        print(acc, std, mrg, mrg_std)
+    else:
+        print("SKIP!")
+    print("#")
 
 print("###")
