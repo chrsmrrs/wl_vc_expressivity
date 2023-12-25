@@ -343,7 +343,7 @@ for p in ps:
     for f in subgraphs:
         graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
         datasets.append((graph_db, classes, p, f))
-        
+
 for (graph_db, classes, p, f) in datasets:
     print(p)
     gram_matrices = []
