@@ -18,7 +18,7 @@ datasets = ["ENZYMES", "MUTAG", "PROTEINS", "PTC_FM", "PTC_MR", ]  #"NCI1", "Mut
 
 for ds in datasets:
     print(ds)
-
+exact?Bone
     # 1-WL.
     gram_matrices = []
     for i in range(1, 6):
