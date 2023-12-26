@@ -14,11 +14,11 @@ cliques = []
 for i in range(3, 7):
     cliques.append(create_clique(i))
 
-datasets = ["ENZYMES", "MUTAG", "PROTEINS", "PTC_FM", "PTC_MR", ]  #"NCI1", "Mutagenicity",  "MCF-7",]
+datasets = ["ENZYMES", "MUTAG", "PROTEINS", "PTC_FM", "PTC_MR", "NCI1"] #, "Mutagenicity",  "MCF-7",]
 
 for ds in datasets:
     print(ds)
-exact?Bone
+    
     # 1-WL.
     gram_matrices = []
     for i in range(1, 6):
