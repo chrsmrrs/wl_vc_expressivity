@@ -27,7 +27,7 @@ for ds in datasets:
         gram_matrix = normalize_feature_vector_dense(gram_matrix)
         gram_matrices.append(gram_matrix)
 
-    acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=5000, num_repetitions=10, C=[10 ** 10])
+    acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10)#, C=[10 ** 10])
     print(acc, std, mrg, mrg_std)
     print("#")
 print("###")
@@ -44,7 +44,7 @@ for ds in datasets:
             gram_matrix = normalize_feature_vector_dense(gram_matrix)
             gram_matrices.append(gram_matrix)
 
-        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=5000, num_repetitions=10, C=[10 ** 10])
+        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10)#, C=[10 ** 10])
         print(acc, std, mrg, mrg_std)
         print("#")
 print("###")
