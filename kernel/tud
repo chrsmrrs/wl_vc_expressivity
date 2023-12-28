@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=time
-#SBATCH --output=tud_5.txt
-#SBATCH --error=tud_5.txt
+#SBATCH --output=tud_no.txt
+#SBATCH --error=tud_no.txt
 #SBATCH --ntasks=1
 #SBATCH --time=72:00:00
 #SBATCH --mem=128G
