@@ -184,9 +184,8 @@ datasets = []
 
 for p in ps:
     for f in subgraphs:
-        graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
+        graph_db, classes = create_randoqqm_graphs(num_graphs, num_vertices, p, -1, f)
         datasets.append((graph_db, classes, p, f))
-
 
 # 1-WL.
 for (graph_db, classes, p, f) in datasets:
@@ -219,9 +218,9 @@ for (graph_db, classes, p, f) in datasets:
             gram_matrix = normalize_gram_matrix(gram_matrix)
             gram_matrices.append(gram_matrix)
 
-        acc, std, mrg, mrg_std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
+        acc, std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
                                                        C=[10 ** 10])
-        print(acc, std, mrg, mrg_std)
+        print(acc, std)
     else:
         print("SKIP!")
     print("#")

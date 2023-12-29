@@ -51,11 +51,10 @@ for ds in datasets:
 print("###")
 
 
-
+# 1-WLOA.
 for ds in datasets:
     print(ds)
 
-    # 1-WLOA.
     gram_matrices = []
     for i in range(1, 6):
         print(i)
@@ -69,7 +68,7 @@ for ds in datasets:
     print("#")
 print("###")
 
-# 1-WL_F.
+# 1-WLOA_F.
 for ds in datasets:
     print(ds)
 
