@@ -9,6 +9,11 @@ from auxiliarymethods.svm import kernel_svm_evaluation
 from auxiliarymethods.svm import normalize_gram_matrix
 
 from wl import compute_wloa, compute_wloa_f
+from auxiliarymethods.svm import linear_svm_evaluation
+from auxiliarymethods.svm import normalize_feature_vector_dense
+
+from wl import compute_wl, compute_wl_f
+
 
 # Create dataset not linear separabel by 1-WL.
 def create_linear_dataset(num, n):
@@ -223,4 +228,42 @@ for (graph_db, classes, p, f) in datasets:
     else:
         print("SKIP!")
     print("#")
+print("###")
+
+for (graph_db, classes, p, f) in datasets:
+    print(p)
+    gram_matrices = []
+
+    if len(np.unique(classes)) >= 2:
+        for i in range(num_it):
+            gram_matrix = compute_wl_f(graph_db, [f], i, induced=induced, compute_gram=False)
+            gram_matrix = normalize_feature_vector_dense(gram_matrix)
+            gram_matrices.append(gram_matrix)
+
+        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
+                                                       C=[10 ** 10])
+        print(acc, std, mrg, mrg_std)
+    else:
+        print("SKIP!")
+    print("#")
+print("###")
+
+# 1-WL.
+for (graph_db, classes, p, f) in datasets:
+    print(p)
+    gram_matrices = []
+
+    if len(np.unique(classes)) >= 2:
+        for i in range(num_it):
+            gram_matrix = compute_wl(graph_db, i, compute_gram=False)
+            gram_matrix = normalize_feature_vector_dense(gram_matrix)
+            gram_matrices.append(gram_matrix)
+
+        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
+                                                       C=[10 ** 10])
+        print(acc, std, mrg, mrg_std)
+    else:
+        print("SKIP!")
+    print("#")
+
 print("###")
