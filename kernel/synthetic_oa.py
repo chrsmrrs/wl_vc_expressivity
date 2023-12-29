@@ -187,23 +187,6 @@ for p in ps:
         graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
         datasets.append((graph_db, classes, p, f))
 
-for (graph_db, classes, p, f) in datasets:
-    print(p)
-    gram_matrices = []
-
-    if len(np.unique(classes)) >= 2:
-        for i in range(num_it):
-            gram_matrix = compute_wloa_f(graph_db, [f], i, induced=induced)
-            gram_matrix = normalize_gram_matrix(gram_matrix)
-            gram_matrices.append(gram_matrix)
-
-        acc, std, mrg, mrg_std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
-                                                       C=[10 ** 10])
-        print(acc, std, mrg, mrg_std)
-    else:
-        print("SKIP!")
-    print("#")
-print("###")
 
 # 1-WL.
 for (graph_db, classes, p, f) in datasets:
@@ -223,4 +206,23 @@ for (graph_db, classes, p, f) in datasets:
         print("SKIP!")
     print("#")
 
+print("###")
+
+
+for (graph_db, classes, p, f) in datasets:
+    print(p)
+    gram_matrices = []
+
+    if len(np.unique(classes)) >= 2:
+        for i in range(num_it):
+            gram_matrix = compute_wloa_f(graph_db, [f], i, induced=induced)
+            gram_matrix = normalize_gram_matrix(gram_matrix)
+            gram_matrices.append(gram_matrix)
+
+        acc, std, mrg, mrg_std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
+                                                       C=[10 ** 10])
+        print(acc, std, mrg, mrg_std)
+    else:
+        print("SKIP!")
+    print("#")
 print("###")
