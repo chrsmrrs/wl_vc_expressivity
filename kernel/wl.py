@@ -189,7 +189,7 @@ def compute_wloa_f(graph_db, f_list, num_it, induced):
 
     gram_matrix = np.zeros([num_graphs,num_graphs], dtype=np.double)
     for i in range(num_graphs):
-        for j in range(i+1,num_graphs):
+        for j in range(i,num_graphs):
             v = feature_vectors[[i, j], :].min(axis=0).sum()
             gram_matrix[i][j] += v
             gram_matrix[j][i] += v
@@ -254,7 +254,7 @@ def compute_wl(graph_db, num_it, compute_gram):
 
     feature_vectors = np.array(feature_vectors, dtype=np.double)
 
-    # Comptue Gram matrix.
+    # Compute Gram matrix.
     if compute_gram:
         feature_vectors = np.dot(feature_vectors, feature_vectors.transpose())
 
@@ -324,7 +324,7 @@ def compute_wloa(graph_db, num_it):
 
     gram_matrix = np.zeros([num_graphs,num_graphs], dtype=np.double)
     for i in range(num_graphs):
-        for j in range(i+1,num_graphs):
+        for j in range(i,num_graphs):
             v = feature_vectors[[i, j], :].min(axis=0).sum()
             gram_matrix[i][j] += v
             gram_matrix[j][i] += v

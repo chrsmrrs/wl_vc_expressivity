@@ -27,7 +27,7 @@ for ds in datasets:
         print(i)
         graph_db, classes = read_txt(ds)
         gram_matrix = compute_wloa(graph_db, i)
-        #gram_matrix = normalize_gram_matrix(gram_matrix)
+        gram_matrix = normalize_gram_matrix(gram_matrix)
         gram_matrices.append(gram_matrix)
 
     acc, std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10)#, C=[10 ** 10])
