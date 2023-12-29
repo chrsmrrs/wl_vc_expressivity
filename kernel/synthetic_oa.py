@@ -5,11 +5,10 @@ import numpy as np
 from graph_tool.all import *
 
 from auxiliarymethods.graphs import create_cycle
-from auxiliarymethods.svm import linear_svm_evaluation
-from auxiliarymethods.svm import normalize_feature_vector_dense
+from auxiliarymethods.svm import kernel_svm_evaluation
+from auxiliarymethods.svm import normalize_gram_matrix
 
-from wl import compute_wl, compute_wl_f
-
+from wl import compute_wloa, compute_wloa_f
 
 # Create dataset not linear separabel by 1-WL.
 def create_linear_dataset(num, n):
@@ -144,33 +143,35 @@ subgraphs.append(g_4)
 
 # First synthetic dataset, linear separability.
 num_it = 6
+# for n in [16, 32, 64, 128]:
+#     graph_db, classes = create_linear_dataset(1000, n)
+#     f = create_cycle(n - 4)
+#
+#     gram_matrices = []
+#     for i in range(num_it):
+#         print(i)
+#         gram_matrix = compute_wloa(graph_db, i)
+#         gram_matrix = normalize_gram_matrix(gram_matrix)
+#         gram_matrices.append(gram_matrix)
+#
+#     acc, std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 10])
+#     print(acc, std)
+# print("###")
+
 for n in [16, 32, 64, 128]:
     graph_db, classes = create_linear_dataset(1000, n)
     f = create_cycle(n - 4)
 
     gram_matrices = []
     for i in range(num_it):
-        gram_matrix = compute_wl(graph_db, i, compute_gram=False)
-        gram_matrix = normalize_feature_vector_dense(gram_matrix)
+        gram_matrix = compute_wloa_f(graph_db, [f], i, induced=True)
+        gram_matrix = normalize_gram_matrix(gram_matrix)
         gram_matrices.append(gram_matrix)
 
-    acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 10])
-    print(acc, std, mrg, mrg_std)
-print("###")
-
-for n in [16, 32, 64, 128]:
-    graph_db, classes = create_linear_dataset(1000, n)
-    f = create_cycle(n - 4)
-
-    gram_matrices = []
-    for i in range(num_it):
-        gram_matrix = compute_wl_f(graph_db, [f], i, induced=True, compute_gram=False)
-        gram_matrix = normalize_feature_vector_dense(gram_matrix)
-        gram_matrices.append(gram_matrix)
-
-    acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
+    acc, std= kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
                                                    C=[10 ** 10])
-    print(acc, std, mrg, mrg_std)
+    print(acc, std)
+
 
 exit()
 
@@ -195,11 +196,11 @@ for (graph_db, classes, p, f) in datasets:
 
     if len(np.unique(classes)) >= 2:
         for i in range(num_it):
-            gram_matrix = compute_wl_f(graph_db, [f], i, induced=induced, compute_gram=False)
-            gram_matrix = normalize_feature_vector_dense(gram_matrix)
+            gram_matrix = compute_wloa_f(graph_db, [f], i, induced=induced)
+            gram_matrix = normalize_gram_matrix(gram_matrix)
             gram_matrices.append(gram_matrix)
 
-        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
+        acc, std, mrg, mrg_std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
                                                        C=[10 ** 10])
         print(acc, std, mrg, mrg_std)
     else:
@@ -214,11 +215,11 @@ for (graph_db, classes, p, f) in datasets:
 
     if len(np.unique(classes)) >= 2:
         for i in range(num_it):
-            gram_matrix = compute_wl(graph_db, i, compute_gram=False)
-            gram_matrix = normalize_feature_vector_dense(gram_matrix)
+            gram_matrix = compute_wloa(graph_db, i)
+            gram_matrix = normalize_gram_matrix(gram_matrix)
             gram_matrices.append(gram_matrix)
 
-        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
+        acc, std, mrg, mrg_std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
                                                        C=[10 ** 10])
         print(acc, std, mrg, mrg_std)
     else:

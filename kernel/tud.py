@@ -2,9 +2,9 @@ from graph_tool.all import *
 
 from auxiliarymethods.auxiliary_methods import read_txt
 from auxiliarymethods.graphs import create_cycle, create_clique
-from auxiliarymethods.svm import linear_svm_evaluation
-from auxiliarymethods.svm import normalize_feature_vector_dense
-from wl import compute_wl, compute_wl_f
+from auxiliarymethods.svm import linear_svm_evaluation, kernel_svm_evaluation
+from auxiliarymethods.svm import normalize_feature_vector_dense, normalize_gram_matrix
+from wl import compute_wl, compute_wl_f, compute_wloa, compute_wloa_f
 
 cycles = []
 for i in range(3, 7):
@@ -15,6 +15,27 @@ for i in range(3, 7):
     cliques.append(create_clique(i))
 
 datasets = ["ENZYMES", "MUTAG", "PROTEINS", "PTC_FM", "PTC_MR", "NCI1"] #, "Mutagenicity",  "MCF-7",]
+#datasets = ["MUTAG", "PROTEINS", "PTC_FM", "PTC_MR", "NCI1"] #, "Mutagenicity",  "MCF-7",]
+
+
+for ds in datasets:
+    print(ds)
+
+    # 1-WLOA.
+    gram_matrices = []
+    for i in range(1, 6):
+        print(i)
+        graph_db, classes = read_txt(ds)
+        gram_matrix = compute_wloa(graph_db, i)
+        #gram_matrix = normalize_gram_matrix(gram_matrix)
+        gram_matrices.append(gram_matrix)
+
+    acc, std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10)#, C=[10 ** 10])
+    print(acc, std)
+    print("#")
+print("###")
+
+exit()
 
 for ds in datasets:
     print(ds)
