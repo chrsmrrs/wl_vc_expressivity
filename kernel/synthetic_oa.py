@@ -191,7 +191,7 @@ for p in ps:
         graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
         datasets.append((graph_db, classes, p, f))
 
-# 1-WL.
+# 1-WLOA.
 for (graph_db, classes, p, f) in datasets:
     print(p)
     gram_matrices = []
@@ -211,7 +211,7 @@ for (graph_db, classes, p, f) in datasets:
 
 print("###")
 
-
+# 1-WLOA_F.
 for (graph_db, classes, p, f) in datasets:
     print(p)
     gram_matrices = []
@@ -230,6 +230,7 @@ for (graph_db, classes, p, f) in datasets:
     print("#")
 print("###")
 
+# 1-WL_F.
 for (graph_db, classes, p, f) in datasets:
     print(p)
     gram_matrices = []
