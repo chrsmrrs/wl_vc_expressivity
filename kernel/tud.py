@@ -16,7 +16,7 @@ for i in range(3, 7):
 
 datasets = ["ENZYMES", "MUTAG", "PROTEINS", "PTC_FM", "PTC_MR", "NCI1"]  # , "Mutagenicity",  "MCF-7",]
 #datasets = ["ENZYMES"] #, "Mutagenicity",  "MCF-7",]
-datasets = ["ENZYMES", "PTC_FM", "PTC_MR"]  # , "Mutagenicity",  "MCF-7",]
+#datasets = ["PTC_MR"]  # , "Mutagenicity",  "MCF-7",]
 
 # 1-WL.
 for ds in datasets:
