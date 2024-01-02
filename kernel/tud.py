@@ -73,21 +73,21 @@ datasets = ["ENZYMES", "MUTAG", "PROTEINS", "PTC_FM", "PTC_MR", "NCI1"]  # , "Mu
 # exit()
 
 # 1-WLOA.
-for ds in datasets:
-    print(ds)
-
-    gram_matrices = []
-    for i in range(1, 6):
-        print(i)
-        graph_db, classes = read_txt(ds)
-        gram_matrix = compute_wloa(graph_db, i)
-        gram_matrix = normalize_gram_matrix(gram_matrix)
-        gram_matrices.append(gram_matrix)
-
-    acc, std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10)  # , C=[10 ** 10])
-    print(acc, std)
-    print("#")
-print("###")
+# for ds in datasets:
+#     print(ds)
+#
+#     gram_matrices = []
+#     for i in range(1, 6):
+#         print(i)
+#         graph_db, classes = read_txt(ds)
+#         gram_matrix = compute_wloa(graph_db, i)
+#         gram_matrix = normalize_gram_matrix(gram_matrix)
+#         gram_matrices.append(gram_matrix)
+#
+#     acc, std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10)  # , C=[10 ** 10])
+#     print(acc, std)
+#     print("#")
+# print("###")
 
 
 
