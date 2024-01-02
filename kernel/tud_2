@@ -1,0 +1,14 @@
+#!/bin/bash
+#SBATCH --job-name=time
+#SBATCH --output=tud_2.txt
+#SBATCH --error=tud_2.txt
+#SBATCH --ntasks=1
+#SBATCH --time=72:00:00
+#SBATCH --mem=128G
+#SBATCH --gres=gpu:1
+#SBATCH -c 8
+#SBATCH --partition=log_gpu_24gb
+export PYTHONUNBUFFERED=1
+source ~/.bashrc
+conda activate gc
+python tud.py
