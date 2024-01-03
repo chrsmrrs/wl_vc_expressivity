@@ -1,7 +1,7 @@
 import graph_tool as gt
 from graph_tool.all import *
 
-# Ccreate cycle on n vertices.
+# Create cycle on n vertices.
 def create_cycle(n):
     g = Graph(directed=False)
 

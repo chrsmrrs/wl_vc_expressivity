@@ -4,11 +4,11 @@ import graph_tool as gt
 import numpy as np
 from graph_tool.all import *
 
-from auxiliarymethods.graphs import create_cycle
-from auxiliarymethods.svm import linear_svm_evaluation
-from auxiliarymethods.svm import normalize_feature_vector_dense
+from kernel.auxiliarymethods.graphs import create_cycle
+from kernel.auxiliarymethods.svm import linear_svm_evaluation
+from kernel.auxiliarymethods.svm import normalize_feature_vector_dense
 
-from wl import compute_wl, compute_wl_f
+from kernel.wl import compute_wl, compute_wl_f
 
 
 # Create dataset not linear separabel by 1-WL.

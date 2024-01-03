@@ -1,7 +1,7 @@
 from graph_tool.all import *
 
-from auxiliarymethods.gnn_f_evaluation import gnn_evaluation
-from auxiliarymethods.graphs import create_cycle
+from auxiliarymethods_gnn.gnn_f_evaluation import gnn_evaluation
+from auxiliarymethods_gnn.graphs import create_cycle
 from gnn_baselines.gnn_architectures import GIN
 
 subgraphs = []
