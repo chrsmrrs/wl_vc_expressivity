@@ -4,14 +4,13 @@ import graph_tool as gt
 import numpy as np
 import torch
 import torch.nn.functional as F
+from auxiliarymethods.auxiliary_methods import read_txt
 from graph_tool.all import *
 from sklearn.model_selection import KFold
 from sklearn.model_selection import train_test_split
 from torch_geometric.data import DataLoader
 from torch_geometric.data import (InMemoryDataset, Data)
-from torch_geometric.datasets import TUDataset
 from torch_geometric.utils import degree
-from auxiliarymethods.auxiliary_methods import read_txt
 
 
 class wl_f(InMemoryDataset):
@@ -41,15 +40,9 @@ class wl_f(InMemoryDataset):
 
         graph_db, classes = read_txt(self.dataset)
 
-        classes_new = []
-
-        for l in classes:
-            if l == -1:
-                classes_new.append(0)
-            else:
-                classes_new.append(1)
-
-        classes = classes_new
+        # Normalize class labels.
+        _, classes_new = np.unique(classes, return_inverse=True)
+        classes = list(classes_new)
 
         for g in graph_db:
             g.vp.nl = g.new_vertex_property("int")
@@ -94,6 +87,10 @@ class wl_f(InMemoryDataset):
                 a.append(int(i))
                 b.append(int(j))
 
+                # Other direction.
+                a.append(int(j))
+                b.append(int(i))
+
             for v in g.vertices():
                 x.append(g.vp.nl[v])
 
@@ -108,9 +105,7 @@ class wl_f(InMemoryDataset):
             data = Data()
             data.edge_index = m
 
-            print(labels[i])
-
-            one_hot = np.eye(self.hidden[-1])[labels[i]]
+            one_hot = np.eye(64)[labels[i]]
             data.x = torch.from_numpy(one_hot).to(torch.float)
 
             data.y = torch.from_numpy(np.array(classes[i])).to(torch.long)

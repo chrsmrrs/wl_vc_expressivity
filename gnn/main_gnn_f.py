@@ -1,29 +1,34 @@
 from graph_tool.all import *
 
 from auxiliarymethods_gnn.gnn_f_evaluation import gnn_evaluation
-from auxiliarymethods_gnn.graphs import create_cycle
+from auxiliarymethods_gnn.graphs import create_cycle, create_clique
 from gnn_baselines.gnn_architectures import GIN
 
-subgraphs = []
-for i in range(3, 16):
-    subgraphs.append(create_cycle(i))
+cycles = []
+for i in range(3, 7):
+    cycles.append(create_cycle(i))
 
+cliques = []
+for i in range(3, 7):
+    cliques.append(create_clique(i))
 
 def main():
-    num_reps = 5
+    num_reps = 10
 
-    ### Smaller datasets.
-    dataset = [["PTC_FM", False]]
+    datasets = ["ENZYMES", "MUTAG", "PROTEINS", "PTC_FM", "PTC_MR", "NCI1"]
+    for d in datasets:
+        print(d)
+        for s in range(1, (len(cycles) + 1)):
+            acc, s_1 = gnn_evaluation(GIN, cycles[0:s], d, [1,2,3,4,5], [64], max_num_epochs=200, batch_size=128,
+                                           start_lr=0.01, num_repetitions=num_reps, all_std=False)
+            print(d + " " + "GIN " + str(acc) + " " + str(s_1))
 
-    results = []
-    for d, use_labels in dataset:
-
-        # GIN, dataset d, layers in [1:6], hidden dimension in {32,64,128}.
-        acc, s_1, s_2 = gnn_evaluation(GIN, subgraphs, d, [3], [64], max_num_epochs=200, batch_size=64,
-                                       start_lr=0.01, num_repetitions=num_reps, all_std=True)
-        print(d + " " + "GIN " + str(acc) + " " + str(s_1) + " " + str(s_2))
-        results.append(d + " " + "GIN " + str(acc) + " " + str(s_1) + " " + str(s_2))
-
+    for d in datasets:
+        print(d)
+        for s in range(1, (len(cliques) + 1)):
+            acc, s_1 = gnn_evaluation(GIN, cliques[0:s], d, [1,2,3,4,5], [64], max_num_epochs=200, batch_size=128,
+                                           start_lr=0.01, num_repetitions=num_reps, all_std=False)
+            print(d + " " + "GIN " + str(acc) + " " + str(s_1))
 
 if __name__ == "__main__":
     main()
