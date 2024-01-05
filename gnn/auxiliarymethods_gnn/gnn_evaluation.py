@@ -6,7 +6,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 import torch_geometric.transforms as T
-from kernel.auxiliarymethods.auxiliary_methods import read_txt
+from auxiliarymethods_gnn.auxiliary_methods import read_txt
 from graph_tool.all import *
 from graph_tool.all import *
 from graph_tool.all import *
