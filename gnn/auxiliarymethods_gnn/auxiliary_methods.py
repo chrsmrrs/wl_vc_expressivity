@@ -14,7 +14,7 @@ from scipy import sparse as sp
 def read_txt(ds_name):
     pre = ""
 
-    with open("../datasets/" + pre + ds_name + "/" + ds_name + "_graph_indicator.txt", "r") as f:
+    with open("./datasets/" + pre + ds_name + "/" + ds_name + "_graph_indicator.txt", "r") as f:
         graph_indicator = [int(i) - 1 for i in list(f)]
     f.closed
 
@@ -42,7 +42,7 @@ def read_txt(ds_name):
         vertex_list.append(vertex_list_g)
 
     # Edges
-    with open("../datasets/" + pre + ds_name + "/" + ds_name + "_A.txt", "r") as f:
+    with open("./datasets/" + pre + ds_name + "/" + ds_name + "_A.txt", "r") as f:
         edges = [i.split(',') for i in list(f)]
     f.closed
 
@@ -61,8 +61,8 @@ def read_txt(ds_name):
             edge_list.append(g.add_edge(e[0] - off, e[1] - off))
 
     # Node labels
-    if path.exists("../datasets/" + pre + ds_name + "/" + ds_name + "_node_labels.txt"):
-        with open("../datasets/" + pre + ds_name + "/" + ds_name + "_node_labels.txt", "r") as f:
+    if path.exists("./datasets/" + pre + ds_name + "/" + ds_name + "_node_labels.txt"):
+        with open("./datasets/" + pre + ds_name + "/" + ds_name + "_node_labels.txt", "r") as f:
             node_labels = [int(i) for i in list(f)]
         f.closed
 
@@ -74,8 +74,8 @@ def read_txt(ds_name):
                 i += 1
 
     # Node Attributes
-    if path.exists("../datasets/" + pre + ds_name + "/" + ds_name + "_node_attributes.txt"):
-        with open("../datasets/" + pre + ds_name + "/" + ds_name + "_node_attributes.txt", "r") as f:
+    if path.exists("./datasets/" + pre + ds_name + "/" + ds_name + "_node_attributes.txt"):
+        with open("./datasets/" + pre + ds_name + "/" + ds_name + "_node_attributes.txt", "r") as f:
             node_attributes = [map(float, i.split(',')) for i in list(f)]
         f.closed
 
@@ -87,8 +87,8 @@ def read_txt(ds_name):
                 i += 1
 
     # Edge Attributes
-    if path.exists("../datasets/" + ds_name + "/" + ds_name + "_edge_attributes.txt"):
-        with open("../datasets/" + ds_name + "/" + ds_name + "_edge_attributes.txt", "r") as f:
+    if path.exists("./datasets/" + ds_name + "/" + ds_name + "_edge_attributes.txt"):
+        with open("./datasets/" + ds_name + "/" + ds_name + "_edge_attributes.txt", "r") as f:
             edge_attributes = [map(float, i.split(',')) for i in list(f)]
         f.closed
 
@@ -105,7 +105,7 @@ def read_txt(ds_name):
             g.ep.ea = l_ea[g_id]
 
     # Classes
-    with open("../datasets/" + pre + ds_name + "/" + ds_name + "_graph_labels.txt", "r") as f:
+    with open("./datasets/" + pre + ds_name + "/" + ds_name + "_graph_labels.txt", "r") as f:
         classes = [int(i) for i in list(f)]
     f.closed
 
