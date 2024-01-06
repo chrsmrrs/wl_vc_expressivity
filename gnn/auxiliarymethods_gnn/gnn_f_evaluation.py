@@ -4,7 +4,7 @@ import graph_tool as gt
 import numpy as np
 import torch
 import torch.nn.functional as F
-from auxiliarymethods.auxiliary_methods import read_txt
+from auxiliarymethods_gnn.auxiliary_methods import read_txt
 from graph_tool.all import *
 from sklearn.model_selection import KFold
 from sklearn.model_selection import train_test_split
