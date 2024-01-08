@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=time
-#SBATCH --output=syn.txt
-#SBATCH --error=syn.txt
+#SBATCH --output=syn_er.txt
+#SBATCH --error=syn_er.txt
 #SBATCH --ntasks=1
 #SBATCH --time=72:00:00
 #SBATCH --mem=128G
@@ -11,4 +11,4 @@
 export PYTHONUNBUFFERED=1
 source ~/.bashrc
 conda activate gc
-python main_gnn_synthetic.py
+python main_gnn_synthetic_er.py

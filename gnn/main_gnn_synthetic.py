@@ -1,4 +1,4 @@
-from auxiliarymethods_gnn.gnn_evaluation import gnn_evaluation_synthetic_linear, gnn_evaluation_synthetic_linear_f
+from auxiliarymethods_gnn.gnn_evaluation import gnn_evaluation_synthetic_linear_f
 from gnn_baselines.gnn_architectures import GIN, GINE, GINEWithJK, GINWithJK
 
 import graph_tool as gt
@@ -54,8 +54,8 @@ def main():
         print(n)
 
         # GIN, dataset d, layers in [1:6], hidden dimension in {32,64,128}.
-        acc, s_1 = gnn_evaluation_synthetic_linear(GIN, n, [1,2,3,4,5], [64], max_num_epochs=200, batch_size=128,
-                                       start_lr=0.01, num_repetitions=num_reps, all_std=False)
+        acc, s_1 = gnn_evaluation_synthetic_linear(GIN, n, [1, 2, 3, 4, 5], [64], max_num_epochs=200, batch_size=128,
+                                                   start_lr=0.01, num_repetitions=num_reps, all_std=False)
         print("GIN " + str(acc) + " " + str(s_1))
         results.append("GIN " + str(acc) + " " + str(s_1))
 
@@ -71,70 +71,6 @@ def main():
 
     # Create subgraphs.
     subgraphs = []
-
-    # C_3.
-    g_1 = Graph(directed=False)
-    a = g_1.add_vertex()
-    b = g_1.add_vertex()
-    c = g_1.add_vertex()
-    g_1.add_edge(a, b)
-    g_1.add_edge(b, c)
-    g_1.add_edge(c, a)
-    subgraphs.append(g_1)
-
-    # C_4.
-    g_2 = Graph(directed=False)
-    a = g_2.add_vertex()
-    b = g_2.add_vertex()
-    c = g_2.add_vertex()
-    d = g_2.add_vertex()
-    g_2.add_edge(a, b)
-    g_2.add_edge(b, c)
-    g_2.add_edge(c, d)
-    g_2.add_edge(d, a)
-    subgraphs.append(g_2)
-
-    # C_5.
-    g_3 = Graph(directed=False)
-    a = g_3.add_vertex()
-    b = g_3.add_vertex()
-    c = g_3.add_vertex()
-    d = g_3.add_vertex()
-    e = g_3.add_vertex()
-    g_3.add_edge(a, b)
-    g_3.add_edge(b, c)
-    g_3.add_edge(c, d)
-    g_3.add_edge(d, e)
-    g_3.add_edge(e, a)
-    subgraphs.append(g_3)
-
-    # K_4.
-    g_4 = Graph(directed=False)
-    a = g_4.add_vertex()
-    b = g_4.add_vertex()
-    c = g_4.add_vertex()
-    d = g_4.add_vertex()
-    g_4.add_edge(a, b)
-    g_4.add_edge(b, c)
-    g_4.add_edge(c, d)
-    g_4.add_edge(d, a)
-    g_4.add_edge(a, c)
-    g_4.add_edge(b, d)
-    subgraphs.append(g_4)
-
-    num_it = 6
-    induced = True
-    ps = [0.05, 0.1, 0.2, 0.3]
-    num_graphs = 1000
-    num_vertices = 20
-
-    datasets = []
-
-    for p in ps:
-        for f in subgraphs:
-            graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
-            datasets.append((graph_db, classes, p, f))
-
 
 
 
