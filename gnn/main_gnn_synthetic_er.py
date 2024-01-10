@@ -1,9 +1,10 @@
-from auxiliarymethods_gnn.gnn_evaluation import gnn_evaluation_synthetic_er, gnn_evaluation_synthetic_er_f
-from gnn_baselines.gnn_architectures import GIN, GINE, GINEWithJK, GINWithJK
-
 import graph_tool as gt
 import numpy as np
 from graph_tool.all import *
+
+from auxiliarymethods_gnn.gnn_evaluation import gnn_evaluation_synthetic_er, gnn_evaluation_synthetic_er_f
+from gnn_baselines.gnn_architectures import GIN
+
 
 # Sample ER graphs.
 def create_er_graph(n, p):
@@ -108,24 +109,19 @@ def main():
 
     for p in ps:
         for f in subgraphs:
-            acc, s_1 =gnn_evaluation_synthetic_er(GIN, p, num_graphs, num_vertices, f, [1, 2, 3, 4, 5], [64], max_num_epochs=200, batch_size=128,
+            acc, s_1 = gnn_evaluation_synthetic_er(GIN, p, num_graphs, num_vertices, f, [1, 2, 3, 4, 5], [64],
+                                                   max_num_epochs=200, batch_size=128,
                                                    start_lr=0.01, num_repetitions=num_reps, all_std=False)
-
 
             print("GIN " + str(acc) + " " + str(s_1))
 
     for p in ps:
         for f in subgraphs:
-            acc, s_1 =gnn_evaluation_synthetic_er_f(GIN, p, num_graphs, num_vertices, f, [1, 2, 3, 4, 5], [64], max_num_epochs=200, batch_size=128,
-                                                   start_lr=0.01, num_repetitions=num_reps, all_std=False)
-
+            acc, s_1 = gnn_evaluation_synthetic_er_f(GIN, p, num_graphs, num_vertices, f, [1, 2, 3, 4, 5], [64],
+                                                     max_num_epochs=200, batch_size=128,
+                                                     start_lr=0.01, num_repetitions=num_reps, all_std=False)
 
             print("GIN " + str(acc) + " " + str(s_1))
-
-
-
-
-
 
 
 if __name__ == "__main__":

@@ -156,10 +156,6 @@ class er(InMemoryDataset):
     def process(self):
         graph_db, classes = create_random_graphs(self.num_graphs, self.n, self.p, -1, self.subgraph)
 
-        # Normalize class labels.
-        _, classes_new = np.unique(classes, return_inverse=True)
-        classes = list(classes_new)
-
         for g in graph_db:
             g.vp.nl = g.new_vertex_property("int")
 
