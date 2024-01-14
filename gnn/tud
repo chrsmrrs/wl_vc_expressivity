@@ -11,4 +11,4 @@
 export PYTHONUNBUFFERED=1
 source ~/.bashrc
 conda activate gc
-python main_gnn.py
+python main_gnnl.py
