@@ -17,9 +17,10 @@ for i in range(3, 7):
 datasets = ["ENZYMES", "MUTAG", "PTC_FM", "PTC_MR"]  # , "Mutagenicity",  "MCF-7",]
 # datasets = ["ENZYMES"] #, "Mutagenicity",  "MCF-7",]
 # datasets = ["PTC_MR"]  # , "Mutagenicity",  "MCF-7",]
-# datasets = ["NCI1"]  # , "Mutagenicity",  "MCF-7",]
+datasets = ["PROTEINS", "NCI1"]  # , "Mutagenicity",  "MCF-7",]
 
 # 1-WL.
+print("1-WL")
 for ds in datasets:
     print(ds)
 
@@ -36,6 +37,8 @@ for ds in datasets:
     print("#")
 print("###")
 
+print("1-WL_F")
+print("Cycles")
 # 1-WL_F.
 for ds in datasets:
     print(ds)
@@ -54,6 +57,7 @@ for ds in datasets:
         print("#")
 print("###")
 
+print("Cliques")
 for ds in datasets:
     print(ds)
 
