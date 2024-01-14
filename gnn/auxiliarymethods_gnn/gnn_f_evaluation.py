@@ -182,9 +182,13 @@ def gnn_evaluation(gnn, subgraphs, ds_name, layers, hidden, max_num_epochs=200, 
     test_accuracies_all = []
     test_accuracies_complete = []
 
+    train_accuracies_all = []
+    train_accuracies_complete = []
+
     for i in range(num_repetitions):
         # Test acc. over all folds.
         test_accuracies = []
+        train_accuracies = []
         kf = KFold(n_splits=10, shuffle=True)
         dataset.shuffle()
 
@@ -193,6 +197,7 @@ def gnn_evaluation(gnn, subgraphs, ds_name, layers, hidden, max_num_epochs=200, 
             train_index, val_index = train_test_split(train_index, test_size=0.1)
             best_val_acc = 0.0
             best_test = 0.0
+            best_train = 0.0
 
             # Split data.
             train_dataset = dataset[train_index.tolist()]
@@ -224,19 +229,26 @@ def gnn_evaluation(gnn, subgraphs, ds_name, layers, hidden, max_num_epochs=200, 
                         if val_acc > best_val_acc:
                             best_val_acc = val_acc
                             best_test = test(test_loader, model, device) * 100.0
+                            best_train = test(train_loader, model, device) * 100.0
 
                         # Break if learning rate is smaller 10**-6.
                         if lr < min_lr:
                             break
 
             test_accuracies.append(best_test)
+            train_accuracies.append(best_train)
 
             if all_std:
                 test_accuracies_complete.append(best_test)
+                train_accuracies_complete.append(best_train)
         test_accuracies_all.append(float(np.array(test_accuracies).mean()))
+        train_accuracies_all.append(float(np.array(train_accuracies).mean()))
 
     if all_std:
-        return (np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std(),
+        return (np.array(train_accuracies_all).mean(), np.array(train_accuracies_all).std(),
+                np.array(train_accuracies_complete).std(),
+                np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std(),
                 np.array(test_accuracies_complete).std())
     else:
-        return (np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std())
+        return (np.array(train_accuracies_all).mean(), np.array(train_accuracies_all).std(), np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std())
+

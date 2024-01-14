@@ -6,7 +6,7 @@ from gnn_baselines.gnn_architectures import GIN
 def main():
     num_reps = 10
 
-    datasets = ["ENZYMES", "MUTAG", "PROTEINS", "PTC_FM", "PTC_MR", "NCI1"]
+    datasets = ["ENZYMES", "MUTAG", "PTC_FM", "PTC_MR"]
     for d in datasets:
         print(d)
         acc, s_1 = gnn_evaluation(GIN, d, [1,2,3,4,5], [64], max_num_epochs=200, batch_size=128,
