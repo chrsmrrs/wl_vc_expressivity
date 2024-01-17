@@ -16,6 +16,7 @@ def main():
     num_reps = 10
 
     datasets = ["ENZYMES", "MUTAG", "PTC_FM", "PTC_MR"]
+    datasets = ["PROTEINS", "NCI1"]
     for d in datasets:
         print(d)
         for s in range(1, (len(cycles) + 1)):
