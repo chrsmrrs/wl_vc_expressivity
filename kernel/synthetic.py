@@ -206,8 +206,9 @@ for (graph_db, classes, p, f) in datasets:
         acc_train, acc_test, mrg = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
                                                        C=[10 ** 10])
 
-        print(p, acc_train, acc_test, mrg)
-        results.append((p, acc_train, acc_test, mrg))
+        print(acc_train - acc_test)
+        print(mrg)
+        results.append((p, acc_train - acc_test, mrg))
     else:
         print("SKIP!")
     print("#")
@@ -232,8 +233,9 @@ for (graph_db, classes, p, f) in datasets:
         acc_train, acc_test, mrg = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
                                                        C=[10 ** 10])
 
-        print(p, acc_train, acc_test, mrg)
-        results.append((p, acc_train, acc_test, mrg))
+        print(acc_train - acc_test)
+        print(mrg)
+        results.append((p, acc_train - acc_test, mrg))
     else:
         print("SKIP!")
     print("#")
