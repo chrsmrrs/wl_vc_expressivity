@@ -12,3 +12,6 @@ export PYTHONUNBUFFERED=1
 source ~/.bashrc
 conda activate gc
 python tud.py
+
+
+

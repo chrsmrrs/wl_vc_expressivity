@@ -170,7 +170,12 @@ def linear_svm_evaluation(all_feature_matrices, classes, num_iter, num_repetitio
         train_accuracies_all.append(float(np.array(train_accuracies).mean()))
         margins_all.append(float(np.array(margins).mean()))
 
-    return (np.array(train_accuracies_all).mean(), np.array(train_accuracies_all).std(),
-            np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std(),
-            np.array(margins_all).mean(),
-            np.array(margins_all).std())
+    # return (np.array(train_accuracies_all).mean(), np.array(train_accuracies_all).std(),
+    #         np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std(),
+    #         np.array(margins_all).mean(),
+    #         np.array(margins_all).std())
+
+    return (np.array(train_accuracies_all),
+            np.array(test_accuracies_all),
+            np.array(margins_all))
+
