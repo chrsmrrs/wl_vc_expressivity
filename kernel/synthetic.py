@@ -1,3 +1,8 @@
+import matplotlib
+#matplotlib.use("TKAgg")
+matplotlib.use("macOSX")
+from matplotlib import pyplot as plt
+
 import math as m
 
 import graph_tool as gt
@@ -10,11 +15,7 @@ from auxiliarymethods.svm import normalize_feature_vector_dense
 
 from wl import compute_wl, compute_wl_f
 
-import matplotlib
 
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
-from matplotlib import rc
 
 import seaborn as sns
 import pandas as pd
@@ -23,8 +24,8 @@ import numpy as np
 
 # for using latex in plt it requires one installation:
 # $ sudo apt install dvipng
-rc('font', **{'family': 'sans-serif', 'sans-serif': ['Helvetica']})
-rc('text', usetex=True)
+#rc('font', **{'family': 'sans-serif', 'sans-serif': ['Helvetica']})
+#rc('text', usetex=True)
 
 sns.set_theme(style="white")
 
@@ -196,7 +197,7 @@ subgraphs.append(g_4)
 num_it = 6
 induced = True
 ps = [0.050, 0.075, 0.100, 0.125, 0.150, 0.175, 0.200, 0.225, 0.250, 0.275, 0.30]
-ps = [0.050, 0.075, 0.100]
+#ps = [0.050, 0.075]
 # ts = [8, 16, 32]
 num_graphs = 1000
 num_vertices = 20
@@ -229,9 +230,11 @@ for (graph_db, classes, p, f) in datasets:
         acc_train, acc_test, mrg = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
                                                        C=[10 ** 10])
 
+        mrg = mrg.mean()
+
         acc_train = np.reshape(acc_train, [10, 1])
         acc_test = np.reshape(acc_test, [10, 1])
-        mrg = np.reshape(mrg, [10, 1])
+        mrg = np.reshape(np.array([mrg]*10), [10, 1])
         ps = np.reshape(np.array([p]*10), [10,1])
 
         acc_diff = acc_train - acc_test
@@ -248,7 +251,7 @@ for (graph_db, classes, p, f) in datasets:
     print("#")
 print("###")
 
-df = pd.DataFrame(matrix, columns=["Difference", "Margin", "p"])
+df = pd.DataFrame(data, columns=["Difference", "Margin", "p"])
 
 g = sns.lineplot(x="Margin", y="Difference", hue="p", data=df)
 g.set(xlabel="Margin $\lambda$", ylabel="Train - test accuracy", title="1-$\mathsf{WL}_\mathcal{F}$")
