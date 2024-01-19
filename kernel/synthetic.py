@@ -182,6 +182,7 @@ num_graphs = 1000
 num_vertices = 20
 
 datasets = []
+subgraphs = [g_2]
 
 for p in ps:
     for f in subgraphs:
@@ -206,9 +207,10 @@ for (graph_db, classes, p, f) in datasets:
         acc_train, acc_test, mrg = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
                                                        C=[10 ** 10])
 
-        print(acc_train - acc_test)
+        print(acc_train)
+        print(acc_test)
         print(mrg)
-        results.append((p, acc_train - acc_test, mrg))
+        results.append((p, acc_train, acc_test, mrg))
     else:
         print("SKIP!")
     print("#")
@@ -233,9 +235,10 @@ for (graph_db, classes, p, f) in datasets:
         acc_train, acc_test, mrg = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
                                                        C=[10 ** 10])
 
-        print(acc_train - acc_test)
+        print(acc_train)
+        print(acc_test)
         print(mrg)
-        results.append((p, acc_train - acc_test, mrg))
+        results.append((p, acc_train, acc_test, mrg))
     else:
         print("SKIP!")
     print("#")
