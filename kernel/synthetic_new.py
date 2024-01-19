@@ -10,25 +10,6 @@ from auxiliarymethods.svm import normalize_feature_vector_dense
 
 from wl import compute_wl, compute_wl_f
 
-import matplotlib
-
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
-from matplotlib import rc
-
-import seaborn as sns
-import pandas as pd
-
-import numpy as np
-
-# for using latex in plt it requires one installation:
-# $ sudo apt install dvipng
-rc('font', **{'family': 'sans-serif', 'sans-serif': ['Helvetica']})
-rc('text', usetex=True)
-
-sns.set_theme(style="white")
-
-
 
 # Create dataset not linear separabel by 1-WL.
 def create_linear_dataset(num, n):
@@ -197,20 +178,20 @@ num_it = 6
 induced = True
 ps = [0.050, 0.075, 0.100, 0.125, 0.150, 0.175, 0.200, 0.225, 0.250, 0.275, 0.30]
 ps = [0.050, 0.075, 0.100]
+
+ps = [0.050,  0.100,  0.200,  0.300]
 # ts = [8, 16, 32]
 num_graphs = 1000
 num_vertices = 20
 
 datasets = []
-subgraphs = [g_2]
+
 
 for p in ps:
     for f in subgraphs:
         graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
         datasets.append((graph_db, classes, p, f))
 
-
-data = np.zeros([0,3])
 
 results = []
 for (graph_db, classes, p, f) in datasets:
@@ -223,45 +204,22 @@ for (graph_db, classes, p, f) in datasets:
             gram_matrix = normalize_feature_vector_dense(gram_matrix)
             gram_matrices.append(gram_matrix)
 
-        # acc_train, std_train, acc_test, std_test, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
-        #                                                C=[10 ** 10])
+        acc_train, std_train, acc_test, std_test, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
+                                                        C=[10 ** 10], all=False)
 
-        acc_train, acc_test, mrg = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
-                                                       C=[10 ** 10])
+        print(p, acc_train, std_train, acc_test, std_test, mrg, mrg_std)
 
-        acc_train = np.reshape(acc_train, [10, 1])
-        acc_test = np.reshape(acc_test, [10, 1])
-        mrg = np.reshape(mrg, [10, 1])
-        ps = np.reshape(np.array([p]*10), [10,1])
-
-        acc_diff = acc_train - acc_test
-
-        matrix = np.concatenate([acc_diff, mrg, ps], axis=1)
-
-        data = np.concatenate([data,matrix], axis=0)
-
-        print(data)
-
+        results.append([p, acc_train, std_train, acc_test, std_test, mrg, mrg_std])
 
     else:
         print("SKIP!")
     print("#")
 print("###")
 
-df = pd.DataFrame(matrix, columns=["Difference", "Margin", "p"])
+for r in results:
+    print(r)
 
-g = sns.lineplot(x="Margin", y="Difference", hue="p", data=df)
-g.set(xlabel="Margin $\lambda$", ylabel="Train - test accuracy", title="1-$\mathsf{WL}_\mathcal{F}$")
-
-sns.move_legend(g, "upper left", title='Prob.')
-
-plt.savefig('line_plot.pdf')
-
-plt.show()
-
-
-
-exit()
+results = []
 
 # 1-WL.
 for (graph_db, classes, p, f) in datasets:
@@ -274,13 +232,12 @@ for (graph_db, classes, p, f) in datasets:
             gram_matrix = normalize_feature_vector_dense(gram_matrix)
             gram_matrices.append(gram_matrix)
 
-        acc_train, acc_test, mrg = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
-                                                       C=[10 ** 10])
+        acc_train, std_train, acc_test, std_test, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
+                                                       C=[10 ** 10], all=False)
 
-        print(acc_train)
-        print(acc_test)
-        print(mrg)
-        results.append((p, acc_train, acc_test, mrg))
+        print(p, acc_train, std_train, acc_test, std_test, mrg, mrg_std)
+
+        results.append([p, acc_train, std_train, acc_test, std_test, mrg, mrg_std])
     else:
         print("SKIP!")
     print("#")

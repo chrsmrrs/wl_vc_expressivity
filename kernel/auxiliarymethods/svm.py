@@ -104,7 +104,7 @@ def kernel_svm_evaluation(all_matrices, classes, num_repetitions=10,
 
 # 10-CV for linear svm with sparse feature vectors and hyperparameter selection.
 def linear_svm_evaluation(all_feature_matrices, classes, num_iter, num_repetitions=10,
-                          C=[10 ** 3, 10 ** 2, 10 ** 1, 10 ** 0, 10 ** -1, 10 ** -2, 10 ** -3]):
+                          C=[10 ** 3, 10 ** 2, 10 ** 1, 10 ** 0, 10 ** -1, 10 ** -2, 10 ** -3], all=True):
     # Acc. over all repetitions.
     test_accuracies_all = []
     train_accuracies_all = []
@@ -170,12 +170,14 @@ def linear_svm_evaluation(all_feature_matrices, classes, num_iter, num_repetitio
         train_accuracies_all.append(float(np.array(train_accuracies).mean()))
         margins_all.append(float(np.array(margins).mean()))
 
-    # return (np.array(train_accuracies_all).mean(), np.array(train_accuracies_all).std(),
-    #         np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std(),
-    #         np.array(margins_all).mean(),
-    #         np.array(margins_all).std())
+    if not all:
+        return (np.array(train_accuracies_all).mean(), np.array(train_accuracies_all).std(),
+                np.array(test_accuracies_all).mean(), np.array(test_accuracies_all).std(),
+                np.array(margins_all).mean(),
+                np.array(margins_all).std())
 
-    return (np.array(train_accuracies_all),
-            np.array(test_accuracies_all),
-            np.array(margins_all))
+    if all:
+        return (np.array(train_accuracies_all),
+                np.array(test_accuracies_all),
+                np.array(margins_all))
 
