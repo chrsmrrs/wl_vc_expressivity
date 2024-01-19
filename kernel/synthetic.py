@@ -1,6 +1,6 @@
 import matplotlib
 #matplotlib.use("TKAgg")
-matplotlib.use("macOSX")
+#matplotlib.use("macOSX")
 from matplotlib import pyplot as plt
 
 import math as m
@@ -260,7 +260,7 @@ sns.move_legend(g, "upper left", title='Prob.')
 
 plt.savefig('line_plot.pdf')
 
-plt.show()
+#plt.show()
 
 
 
