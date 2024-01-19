@@ -38,7 +38,7 @@ def create_linear_dataset(num, n):
             g = Graph(directed=False)
 
             for _ in range(i):
-                g.add_vertex()le
+                g.add_vertex()
 
             c_1 = create_cycle(m.ceil(n / 2) - 2)
             c_2 = create_cycle(m.ceil(n / 2) - 2)
