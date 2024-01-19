@@ -192,24 +192,26 @@ for p in ps:
         datasets.append((graph_db, classes, p, f))
 
 # 1-WLOA.
-# for (graph_db, classes, p, f) in datasets:
-#     print(p)
-#     gram_matrices = []
-#
-#     if len(np.unique(classes)) >= 2:
-#         for i in range(num_it):
-#             gram_matrix = compute_wloa(graph_db, i)
-#             gram_matrix = normalize_gram_matrix(gram_matrix)
-#             gram_matrices.append(gram_matrix)
-#
-#         acc, std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
-#                                                        C=[10 ** 10])
-#         print(acc, std)
-#     else:
-#         print("SKIP!")
-#     print("#")
+results = []
+for (graph_db, classes, p, f) in datasets:
+    print(p)
+    gram_matrices = []
 
+    if len(np.unique(classes)) >= 2:
+        for i in range(num_it):
+            gram_matrix = compute_wloa(graph_db, i)
+            gram_matrix = normalize_gram_matrix(gram_matrix)
+            gram_matrices.append(gram_matrix)
+
+        acc_train, std_train, acc_test, std_test = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
+                                                       C=[10 ** 10])
+        print(acc_train, std_train, acc_test, std_test)
+        results.append([p,acc_train, std_train, acc_test, std_test])
+    else:
+        print("SKIP!")
+    print("#")
 print("###")
+
 
 # 1-WLOA_F.
 for (graph_db, classes, p, f) in datasets:
@@ -222,15 +224,15 @@ for (graph_db, classes, p, f) in datasets:
             gram_matrix = normalize_gram_matrix(gram_matrix)
             gram_matrices.append(gram_matrix)
 
-        acc, std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
+        acc_train, std_train, acc_test, std_test = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
                                                        C=[10 ** 10])
-        print(acc, std)
+        print(acc_train, std_train, acc_test, std_test)
+        results.append([p,acc_train, std_train, acc_test, std_test])
     else:
         print("SKIP!")
     print("#")
 print("###")
 
-exit()
 
 # 1-WL_F.
 for (graph_db, classes, p, f) in datasets:
@@ -243,13 +245,18 @@ for (graph_db, classes, p, f) in datasets:
             gram_matrix = normalize_feature_vector_dense(gram_matrix)
             gram_matrices.append(gram_matrix)
 
-        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
-                                                       C=[10 ** 10])
-        print(acc, std, mrg, mrg_std)
+        acc_train, std_train, acc_test, std_test, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
+                                                        C=[10 ** 10], all=False)
+
+        print(p, acc_train, std_train, acc_test, std_test, mrg, mrg_std)
+
+        results.append([p, acc_train, std_train, acc_test, std_test, mrg, mrg_std])
+
     else:
         print("SKIP!")
     print("#")
 print("###")
+
 
 # 1-WL.
 for (graph_db, classes, p, f) in datasets:
@@ -262,11 +269,19 @@ for (graph_db, classes, p, f) in datasets:
             gram_matrix = normalize_feature_vector_dense(gram_matrix)
             gram_matrices.append(gram_matrix)
 
-        acc, std, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
-                                                       C=[10 ** 10])
-        print(acc, std, mrg, mrg_std)
+        acc_train, std_train, acc_test, std_test, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
+                                                       C=[10 ** 10], all=False)
+
+        print(p, acc_train, std_train, acc_test, std_test, mrg, mrg_std)
+
+        results.append([p, acc_train, std_train, acc_test, std_test, mrg, mrg_std])
     else:
         print("SKIP!")
     print("#")
-
 print("###")
+
+for r in results:
+    print(r)
+
+
+
