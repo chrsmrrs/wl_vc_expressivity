@@ -216,7 +216,7 @@ for (graph_db, classes, p, f) in datasets:
         #                                                C=[10 ** 10])
 
         acc_train, acc_test, mrg = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
-                                                         C=[10 ** 10], all=False)
+                                                         C=[10 ** 10], )
 
         # mrg = mrg.mean()
 
@@ -252,7 +252,7 @@ for (graph_db, classes, p, f) in datasets:
             gram_matrices.append(gram_matrix)
 
         acc_train, acc_test, mrg = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
-                                                         C=[10 ** 10], all=False)
+                                                         C=[10 ** 10])
 
         acc_train = np.reshape(acc_train, [10, 1])
         acc_test = np.reshape(acc_test, [10, 1])
