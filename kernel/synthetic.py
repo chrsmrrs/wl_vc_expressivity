@@ -204,8 +204,8 @@ ps = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30]
 num_graphs = 1000
 num_vertices = 20
 
-for i, g in enumerate(all_subgraphs):
-    print(names[i])
+for n, g in enumerate(all_subgraphs):
+    print(names[n])
     datasets = []
 
     for p in ps:
@@ -249,15 +249,15 @@ for i, g in enumerate(all_subgraphs):
         print("#")
     print("###")
 
-    np.savetxt("data_wl_f_" + names[i] + ".csv", data, delimiter=",")
+    np.savetxt("data_wl_f_" + names[n] + ".csv", data, delimiter=",")
 
     df = pd.DataFrame(data, columns=["Difference", "Margin", "p"])
 
     g = sns.scatterplot(x="Margin", y="Difference", hue="p", data=df, palette=sns.color_palette("flare", as_cmap=True))
-    g.set(xlabel="Margin $\lambda$", ylabel="Train - test accuracy [\%]", title=names[i])
+    g.set(xlabel="Margin $\lambda$", ylabel="Train - test accuracy [\%]", title=names[n])
 
     sns.move_legend(g, "upper right", title='$p$')
 
-    plt.savefig('line_plot_' + names[i] + '.pdf', bbox_inches='tight')
+    plt.savefig('line_plot_' + names[n] + '.pdf', bbox_inches='tight')
 
 
