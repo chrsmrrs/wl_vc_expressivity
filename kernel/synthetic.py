@@ -1,6 +1,13 @@
 # matplotlib.use("TKAgg")
 # matplotlib.use("macOSX")
 
+import matplotlib
+
+#matplotlib.use("TKAgg")
+# matplotlib.use("macOSX")
+from matplotlib import pyplot as plt
+
+
 import math as m
 
 import graph_tool as gt
@@ -13,11 +20,6 @@ from auxiliarymethods.svm import linear_svm_evaluation
 from auxiliarymethods.svm import normalize_feature_vector_dense
 from wl import compute_wl, compute_wl_f
 
-import matplotlib
-
-matplotlib.use("TKAgg")
-# matplotlib.use("macOSX")
-from matplotlib import pyplot as plt
 
 import seaborn as sns
 import pandas as pd
