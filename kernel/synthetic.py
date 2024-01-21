@@ -198,7 +198,7 @@ all_subgraphs.append(g_4)
 # Some hyperparameters.
 num_it = 6
 induced = True
-ps = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30]
+ps = [0.05, 0.10, 0.15, 0.20, 0.25, 0.3]
 # ps = [0.050, 0.075]
 # ts = [8, 16, 32]
 num_graphs = 1000
@@ -251,13 +251,13 @@ for n, g in enumerate(all_subgraphs):
 
     np.savetxt("data_wl_f_" + names[n] + ".csv", data, delimiter=",")
 
-    df = pd.DataFrame(data, columns=["Difference", "Margin", "p"])
+    #df = pd.DataFrame(data, columns=["Difference", "Margin", "p"])
 
-    g = sns.scatterplot(x="Margin", y="Difference", hue="p", data=df, palette=sns.color_palette("flare", as_cmap=True))
-    g.set(xlabel="Margin $\lambda$", ylabel="Train - test accuracy [\%]", title=names[n])
+    #g = sns.scatterplot(x="Margin", y="Difference", hue="p", data=df, palette=sns.color_palette("flare", as_cmap=True))
+    #g.set(xlabel="Margin $\lambda$", ylabel="Train - test accuracy [\%]", title=names[n])
 
-    sns.move_legend(g, "upper right", title='$p$')
+    #sns.move_legend(g, "upper right", title='$p$')
 
-    plt.savefig('line_plot_' + names[n] + '.pdf', bbox_inches='tight')
+    #plt.savefig('line_plot_' + names[n] + '.pdf', bbox_inches='tight')
 
 
