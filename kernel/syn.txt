@@ -1,8 +1,8 @@
 --------------------- Slurm Task Prolog ------------------------
-Job ID: 4254655
+Job ID: 4266169
 Job name: time
 Host: cn-301
-Date: Sat Jan 20 23:10:08 CET 2024
+Date: Sun Jan 21 17:23:42 CET 2024
 User: morris
 Slurm account: log
 Slurm partition: gpu_80gb
@@ -10,63 +10,97 @@ Work dir:
 ------------------
 Node usage:
 JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-4254655  gpu_80gb     time   morris  R       0:01      1 cn-301
+4264207  gpu_80gb  50M-100 luis.mue  R    3:39:28      1 cn-301
+4266169  gpu_80gb     time   morris  R       0:05      1 cn-301
 ------------------
 Show launch script with:
 sacct -B -j 
 ------------------
 --------------------- Slurm Task Prolog ------------------------
+$C_3$
 0.05
-#
-0.075
 #
 0.1
 #
-0.125
-#
 0.15
-#
-0.175
 #
 0.2
 #
-0.225
-#
 0.25
-#
-0.275
 #
 0.3
 #
 ###
-0.05
-#
-0.075
-#
-0.1
-#
-0.125
-#
-0.15
-#
-0.175
-#
-0.2
-#
-0.225
-#
-0.25
-#
-0.275
-#
-0.3
-#
-###
+Traceback (most recent call last):
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/texmanager.py", line 253, in _run_checked_subprocess
+    report = subprocess.check_output(
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/subprocess.py", line 421, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/subprocess.py", line 503, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/subprocess.py", line 971, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/subprocess.py", line 1847, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'latex'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/u/morris/wl_vc_expressivity/kernel/synthetic.py", line 261, in <module>
+    plt.savefig('line_plot_' + names[n] + '.pdf', bbox_inches='tight')
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/pyplot.py", line 959, in savefig
+    res = fig.savefig(*args, **kwargs)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/figure.py", line 3285, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/backend_bases.py", line 2314, in print_figure
+    self.figure.draw(renderer)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/artist.py", line 74, in draw_wrapper
+    result = draw(artist, renderer, *args, **kwargs)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/artist.py", line 51, in draw_wrapper
+    return draw(artist, renderer)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/figure.py", line 3082, in draw
+    mimage._draw_list_compositing_images(
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/image.py", line 131, in _draw_list_compositing_images
+    a.draw(renderer)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/artist.py", line 51, in draw_wrapper
+    return draw(artist, renderer)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/axes/_base.py", line 3064, in draw
+    self._update_title_position(renderer)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/axes/_base.py", line 3008, in _update_title_position
+    ax.yaxis.get_tightbbox(renderer)  # update offsetText
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/axis.py", line 1253, in get_tightbbox
+    self._update_label_position(renderer)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/axis.py", line 2506, in _update_label_position
+    bboxes, bboxes2 = self._get_tick_boxes_siblings(renderer=renderer)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/axis.py", line 2056, in _get_tick_boxes_siblings
+    tlb, tlb2 = axis._get_ticklabel_bboxes(ticks_to_draw, renderer)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/axis.py", line 1232, in _get_ticklabel_bboxes
+    return ([tick.label1.get_window_extent(renderer)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/axis.py", line 1232, in <listcomp>
+    return ([tick.label1.get_window_extent(renderer)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/text.py", line 915, in get_window_extent
+    bbox, info, descent = self._get_layout(self._renderer)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/text.py", line 313, in _get_layout
+    _, lp_h, lp_d = _get_text_metrics_with_cache(
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/text.py", line 97, in _get_text_metrics_with_cache
+    return _get_text_metrics_with_cache_impl(
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/text.py", line 105, in _get_text_metrics_with_cache_impl
+    return renderer_ref().get_text_width_height_descent(text, fontprop, ismath)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/backends/_backend_pdf_ps.py", line 109, in get_text_width_height_descent
+    w, h, d = texmanager.get_text_width_height_descent(
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/texmanager.py", line 362, in get_text_width_height_descent
+    dvifile = cls.make_dvi(tex, fontsize)
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/texmanager.py", line 295, in make_dvi
+    cls._run_checked_subprocess(
+  File "/u/morris/miniconda3/envs/gc/lib/python3.10/site-packages/matplotlib/texmanager.py", line 257, in _run_checked_subprocess
+    raise RuntimeError(
+RuntimeError: Failed to process string with tex because latex could not be found
 --------------------- Slurm Task Epilog ------------------------
-Job ID: 4254655
-Time: Sun Jan 21 11:37:04 CET 2024
-Elapsed Time: 12:26:57
+Job ID: 4266169
+Time: Sun Jan 21 20:39:27 CET 2024
+Elapsed Time: 03:15:50
 Billing per second for TRES: billing=1620,cpu=8,gres/gpu=1,mem=128G,node=1
 Show resource usage with e.g.:
-sacct -j 4254655 -o Elapsed,TotalCPU,UserCPU,SystemCPU,MaxRSS,ReqTRES%60,MaxDiskRead,MaxDiskWrite
+sacct -j 4266169 -o Elapsed,TotalCPU,UserCPU,SystemCPU,MaxRSS,ReqTRES%60,MaxDiskRead,MaxDiskWrite
 --------------------- Slurm Task Epilog ------------------------
