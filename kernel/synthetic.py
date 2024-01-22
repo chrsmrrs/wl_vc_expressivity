@@ -121,7 +121,7 @@ c = g_1.add_vertex()
 g_1.add_edge(a, b)
 g_1.add_edge(b, c)
 g_1.add_edge(c, a)
-all_subgraphs.append(g_1)
+#all_subgraphs.append(g_1)
 
 # C_4.
 g_2 = Graph(directed=False)
@@ -237,11 +237,11 @@ for n, g in enumerate(all_subgraphs):
             acc_test = np.reshape(acc_test, [10, 1])
             # mrg = np.reshape(np.array([mrg] * 10), [10, 1])
             mrg = np.reshape(mrg, [10, 1])
-            ps = np.reshape(np.array([p] * 10), [10, 1])
+            pss = np.reshape(np.array([p] * 10), [10, 1])
 
             acc_diff = acc_train - acc_test
 
-            matrix = np.concatenate([acc_diff, mrg, ps], axis=1)
+            matrix = np.concatenate([acc_diff, mrg, pss], axis=1)
 
             data = np.concatenate([data, matrix], axis=0)
         else:

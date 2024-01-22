@@ -13,12 +13,12 @@ import numpy as np
 
 # for using latex in plt it requires one installation:
 # $ sudo apt install dvipng
-plt.rc('font', **{'family': 'sans-serif', 'sans-serif': ['Helvetica']})
+plt.rc('font', **{'family': 'sans-serif', 'sans-serif': ['Computer Modern']})
 plt.rc('text', usetex=True)
 
 # csns.set_theme(style="white")
 
-data = np.loadtxt("data_wl_f.csv", delimiter=",")
+data = np.loadtxt("data_wl_f_$C_4$.csv", delimiter=",")
 
 
 
@@ -32,6 +32,6 @@ g.set(xlabel="Margin $\lambda$", ylabel="Train - test accuracy [\%]", title="1-$
 
 sns.move_legend(g, "upper right", title='$p$')
 
-plt.savefig('line_plot.pdf', bbox_inches = 'tight')
+plt.savefig('c3.pdf', bbox_inches = 'tight')
 
 plt.show()
