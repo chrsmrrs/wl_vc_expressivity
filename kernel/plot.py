@@ -20,6 +20,15 @@ plt.rc('text', usetex=True)
 
 data = np.loadtxt("data_wl_f_$C_3$.csv", delimiter=",")
 
+[0.05, 0.10, 0.15, 0.20, 0.25, 0.3]
+
+n = np.array([[p]*10 for p in [0.05, 0.10, 0.15, 0.20, 0.25, 0.3]])
+
+n = np.reshape(n, [60, 1])
+
+print(data.shape)
+#print(n)
+exit()
 
 
 df = pd.DataFrame(data, columns=["Difference", "Margin", "p"])
