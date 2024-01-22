@@ -111,7 +111,7 @@ def create_random_graphs(num, n, p, t, f):
 
 # Create subgraphs.
 all_subgraphs = []
-names = ["$C_3$", "$C_4$", "$C_5$", "$K_4$"]
+names = [ "$C_4$", "$C_5$", "$K_4$"]
 
 # C_3.
 g_1 = Graph(directed=False)
