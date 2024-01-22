@@ -111,7 +111,7 @@ def create_random_graphs(num, n, p, t, f):
 
 # Create subgraphs.
 all_subgraphs = []
-names = [ "$C_4$", "$C_5$", "$K_4$"]
+names = ["$C_3$", "$C_4$", "$C_5$", "$K_4$"]
 
 # C_3.
 g_1 = Graph(directed=False)
@@ -121,7 +121,7 @@ c = g_1.add_vertex()
 g_1.add_edge(a, b)
 g_1.add_edge(b, c)
 g_1.add_edge(c, a)
-#all_subgraphs.append(g_1)
+all_subgraphs.append(g_1)
 
 # C_4.
 g_2 = Graph(directed=False)
@@ -198,7 +198,7 @@ all_subgraphs.append(g_4)
 # Some hyperparameters.
 num_it = 6
 induced = True
-ps = [0.05, 0.10, 0.15, 0.20, 0.25, 0.3]
+ps = [0.050, 0.075, 0.10, 0.125, 0.15, 0.175, 0.20, 0,225, 0.25, 0.275, 0.300]
 # ps = [0.050, 0.075]
 # ts = [8, 16, 32]
 num_graphs = 1000

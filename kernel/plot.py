@@ -18,8 +18,7 @@ plt.rc('text', usetex=True)
 
 # csns.set_theme(style="white")
 
-data = np.loadtxt("data_wl_f_$C_4$.csv", delimiter=",")
-
+data = np.loadtxt("data_wl_f_$C_3$.csv", delimiter=",")
 
 
 
