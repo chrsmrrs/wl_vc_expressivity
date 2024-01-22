@@ -1,8 +1,8 @@
 --------------------- Slurm Task Prolog ------------------------
-Job ID: 4267470
+Job ID: 4271393
 Job name: time
 Host: cn-301
-Date: Sun Jan 21 20:51:41 CET 2024
+Date: Mon Jan 22 09:43:30 CET 2024
 User: morris
 Slurm account: log
 Slurm partition: gpu_80gb
@@ -10,8 +10,7 @@ Work dir:
 ------------------
 Node usage:
 JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-4264207  gpu_80gb  50M-100 luis.mue  R    7:07:27      1 cn-301
-4267470  gpu_80gb     time   morris  R       0:01      1 cn-301
+4271393  gpu_80gb     time   morris  R       0:00      1 cn-301
 ------------------
 Show launch script with:
 sacct -B -j 
@@ -20,40 +19,34 @@ sacct -B -j
 $C_3$
 0.05
 #
+0.075
+#
 0.1
+#
+0.125
 #
 0.15
 #
+0.175
+#
 0.2
 #
+0
+SKIP!
+#
+225
+SKIP!
+#
 0.25
+#
+0.275
 #
 0.3
 #
 ###
 $C_4$
-[0.3]
+0.05
 #
-[0.3]
+0.075
 #
-[0.3]
-#
-[0.3]
-#
-[0.3]
-#
-[0.3]
-#
-[0.3]
-#
-[0.3]
-#
-[0.3]
-#
-[0.3]
-#
-###
-$C_5$
-[0.3]
-#
-[0.3]
+0.1
