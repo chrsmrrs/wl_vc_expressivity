@@ -4,4 +4,4 @@
 
 Source code to reproduce the results for the ICML 2024 paper "Weisfeiler–Leman at the margin: When more expressivity matters"
 
-To reproduce the results for answering questions **Q1** to **Q4**, simply run `gnn/*.py`, kernel/*.py`.
+To reproduce the results for answering questions **Q1** to **Q4**, simply run `gnn/*.py` and `kernel/*.py`.
