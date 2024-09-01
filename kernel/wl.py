@@ -97,7 +97,6 @@ def compute_wl_f(graph_db, f_list, num_it, induced, compute_gram):
     return feature_vectors
 
 
-
 # Simple implementation of 1-WL_F.
 def compute_wloa_f(graph_db, f_list, num_it, induced):
     num_graphs = len(graph_db)
@@ -184,16 +183,16 @@ def compute_wloa_f(graph_db, f_list, num_it, induced):
                            enumerate(graph_indices)]
         c += 1
 
-
     feature_vectors = np.array(feature_vectors, dtype=np.double)
 
-    gram_matrix = np.zeros([num_graphs,num_graphs], dtype=np.double)
+    gram_matrix = np.zeros([num_graphs, num_graphs], dtype=np.double)
     for i in range(num_graphs):
-        for j in range(i,num_graphs):
+        for j in range(i, num_graphs):
             v = feature_vectors[[i, j], :].min(axis=0).sum()
             gram_matrix[i][j] += v
             gram_matrix[j][i] += v
     return gram_matrix
+
 
 # Simple implementation of 1-WL.
 def compute_wl(graph_db, num_it, compute_gram):
@@ -322,9 +321,9 @@ def compute_wloa(graph_db, num_it):
 
     feature_vectors = np.array(feature_vectors, dtype=np.double)
 
-    gram_matrix = np.zeros([num_graphs,num_graphs], dtype=np.double)
+    gram_matrix = np.zeros([num_graphs, num_graphs], dtype=np.double)
     for i in range(num_graphs):
-        for j in range(i,num_graphs):
+        for j in range(i, num_graphs):
             v = feature_vectors[[i, j], :].min(axis=0).sum()
             gram_matrix[i][j] += v
             gram_matrix[j][i] += v

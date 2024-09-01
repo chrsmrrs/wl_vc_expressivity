@@ -6,13 +6,11 @@ from graph_tool.all import *
 
 from auxiliarymethods.graphs import create_cycle
 from auxiliarymethods.svm import kernel_svm_evaluation
-from auxiliarymethods.svm import normalize_gram_matrix
-
-from wl import compute_wloa, compute_wloa_f
 from auxiliarymethods.svm import linear_svm_evaluation
 from auxiliarymethods.svm import normalize_feature_vector_dense
-
+from auxiliarymethods.svm import normalize_gram_matrix
 from wl import compute_wl, compute_wl_f
+from wl import compute_wloa, compute_wloa_f
 
 
 # Create dataset not linear separable by 1-WL.
@@ -79,11 +77,6 @@ def create_random_graphs(num, n, p, t, f):
 
     for g in graph_db:
         maps = gt.topology.subgraph_isomorphism(f, g, induced=induced)
-
-        # if len(maps) >= t:
-        #     classes.append(0)
-        # else:
-        #     classes.append(1)
         classes.append(len(maps))
 
     classes = np.array(classes)
@@ -144,43 +137,41 @@ g_4.add_edge(a, c)
 g_4.add_edge(b, d)
 subgraphs.append(g_4)
 
+# First synthetic dataset, linear separability.
+num_it = 6
+for n in [16, 32, 64, 128]:
+    graph_db, classes = create_linear_dataset(1000, n)
+    f = create_cycle(n - 4)
 
-# # First synthetic dataset, linear separability.
-# num_it = 6
-# for n in [16, 32, 64, 128]:
-#     graph_db, classes = create_linear_dataset(1000, n)
-#     f = create_cycle(n - 4)
-#
-#     gram_matrices = []
-#     for i in range(num_it):
-#         gram_matrix = compute_wloa(graph_db, i)
-#         gram_matrix = normalize_gram_matrix(gram_matrix)
-#         gram_matrices.append(gram_matrix)
-#
-#     acc, std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 10])
-#     print(acc, std)
-# print("###")
-#
-# for n in [16, 32, 64, 128]:
-#     graph_db, classes = create_linear_dataset(1000, n)
-#     f = create_cycle(n - 4)
-#
-#     gram_matrices = []
-#     for i in range(num_it):
-#         gram_matrix = compute_wloa_f(graph_db, [f], i, induced=True)
-#         gram_matrix = normalize_gram_matrix(gram_matrix)
-#         gram_matrices.append(gram_matrix)
-#
-#     acc, std= kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
-#                                                    C=[10 ** 10])
-#     print(acc, std)
-#
+    gram_matrices = []
+    for i in range(num_it):
+        gram_matrix = compute_wloa(graph_db, i)
+        gram_matrix = normalize_gram_matrix(gram_matrix)
+        gram_matrices.append(gram_matrix)
+
+    acc, std = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10, C=[10 ** 10])
+    print(acc, std)
+print("###")
+
+for n in [16, 32, 64, 128]:
+    graph_db, classes = create_linear_dataset(1000, n)
+    f = create_cycle(n - 4)
+
+    gram_matrices = []
+    for i in range(num_it):
+        gram_matrix = compute_wloa_f(graph_db, [f], i, induced=True)
+        gram_matrix = normalize_gram_matrix(gram_matrix)
+        gram_matrices.append(gram_matrix)
+
+    acc, std= kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
+                                                   C=[10 ** 10])
+    print(acc, std)
+
 
 # Some hyperparameters.
 num_it = 6
 induced = True
 ps = [0.05, 0.1, 0.2, 0.3]
-# ts = [8, 16, 32]
 num_graphs = 1000
 num_vertices = 20
 
@@ -204,14 +195,13 @@ for (graph_db, classes, p, f) in datasets:
             gram_matrices.append(gram_matrix)
 
         acc_train, std_train, acc_test, std_test = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
-                                                       C=[10 ** 10])
+                                                                         C=[10 ** 10])
         print(acc_train, std_train, acc_test, std_test)
-        results.append([p,acc_train, std_train, acc_test, std_test])
+        results.append([p, acc_train, std_train, acc_test, std_test])
     else:
         print("SKIP!")
     print("#")
 print("###")
-
 
 # 1-WLOA_F.
 for (graph_db, classes, p, f) in datasets:
@@ -225,14 +215,13 @@ for (graph_db, classes, p, f) in datasets:
             gram_matrices.append(gram_matrix)
 
         acc_train, std_train, acc_test, std_test = kernel_svm_evaluation(gram_matrices, classes, num_repetitions=10,
-                                                       C=[10 ** 10])
+                                                                         C=[10 ** 10])
         print(acc_train, std_train, acc_test, std_test)
-        results.append([p,acc_train, std_train, acc_test, std_test])
+        results.append([p, acc_train, std_train, acc_test, std_test])
     else:
         print("SKIP!")
     print("#")
 print("###")
-
 
 # 1-WL_F.
 for (graph_db, classes, p, f) in datasets:
@@ -245,8 +234,10 @@ for (graph_db, classes, p, f) in datasets:
             gram_matrix = normalize_feature_vector_dense(gram_matrix)
             gram_matrices.append(gram_matrix)
 
-        acc_train, std_train, acc_test, std_test, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
-                                                        C=[10 ** 10], all=False)
+        acc_train, std_train, acc_test, std_test, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes,
+                                                                                       num_iter=1000,
+                                                                                       num_repetitions=10,
+                                                                                       C=[10 ** 10], all=False)
 
         print(p, acc_train, std_train, acc_test, std_test, mrg, mrg_std)
 
@@ -256,7 +247,6 @@ for (graph_db, classes, p, f) in datasets:
         print("SKIP!")
     print("#")
 print("###")
-
 
 # 1-WL.
 for (graph_db, classes, p, f) in datasets:
@@ -269,8 +259,10 @@ for (graph_db, classes, p, f) in datasets:
             gram_matrix = normalize_feature_vector_dense(gram_matrix)
             gram_matrices.append(gram_matrix)
 
-        acc_train, std_train, acc_test, std_test, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
-                                                       C=[10 ** 10], all=False)
+        acc_train, std_train, acc_test, std_test, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes,
+                                                                                       num_iter=1000,
+                                                                                       num_repetitions=10,
+                                                                                       C=[10 ** 10], all=False)
 
         print(p, acc_train, std_train, acc_test, std_test, mrg, mrg_std)
 
@@ -282,6 +274,3 @@ print("###")
 
 for r in results:
     print(r)
-
-
-

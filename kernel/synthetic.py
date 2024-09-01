@@ -1,18 +1,7 @@
-# matplotlib.use("TKAgg")
-# matplotlib.use("macOSX")
-
-import matplotlib
-
-#matplotlib.use("TKAgg")
-# matplotlib.use("macOSX")
-from matplotlib import pyplot as plt
-
-
 import math as m
 
 import graph_tool as gt
 import numpy as np
-import seaborn as sns
 from graph_tool.all import *
 
 from auxiliarymethods.graphs import create_cycle
@@ -20,18 +9,6 @@ from auxiliarymethods.svm import linear_svm_evaluation
 from auxiliarymethods.svm import normalize_feature_vector_dense
 from wl import compute_wl, compute_wl_f
 
-
-import seaborn as sns
-import pandas as pd
-
-# for using latex in plt it requires one installation:
-# $ sudo apt install dvipng
-# rc('font', **{'family': 'sans-serif', 'sans-serif': ['Helvetica']})
-# rc('text', usetex=True)
-
-#sns.set_theme(style="white")
-plt.rc('font', **{'family': 'sans-serif', 'sans-serif': ['Helvetica']})
-plt.rc('text', usetex=True)
 
 # Create dataset not linear separabel by 1-WL.
 def create_linear_dataset(num, n):
@@ -110,8 +87,7 @@ def create_random_graphs(num, n, p, t, f):
 
 
 # Create subgraphs.
-all_subgraphs = []
-names = ["$C_3$", "$C_4$", "$C_5$", "$K_4$"]
+subgraphs = []
 
 # C_3.
 g_1 = Graph(directed=False)
@@ -121,7 +97,7 @@ c = g_1.add_vertex()
 g_1.add_edge(a, b)
 g_1.add_edge(b, c)
 g_1.add_edge(c, a)
-all_subgraphs.append(g_1)
+subgraphs.append(g_1)
 
 # C_4.
 g_2 = Graph(directed=False)
@@ -133,7 +109,7 @@ g_2.add_edge(a, b)
 g_2.add_edge(b, c)
 g_2.add_edge(c, d)
 g_2.add_edge(d, a)
-all_subgraphs.append(g_2)
+subgraphs.append(g_2)
 
 # C_5.
 g_3 = Graph(directed=False)
@@ -147,7 +123,7 @@ g_3.add_edge(b, c)
 g_3.add_edge(c, d)
 g_3.add_edge(d, e)
 g_3.add_edge(e, a)
-all_subgraphs.append(g_3)
+subgraphs.append(g_3)
 
 # K_4.
 g_4 = Graph(directed=False)
@@ -161,7 +137,7 @@ g_4.add_edge(c, d)
 g_4.add_edge(d, a)
 g_4.add_edge(a, c)
 g_4.add_edge(b, d)
-all_subgraphs.append(g_4)
+subgraphs.append(g_4)
 
 #
 # # First synthetic dataset, linear separability.
@@ -198,66 +174,72 @@ all_subgraphs.append(g_4)
 # Some hyperparameters.
 num_it = 6
 induced = True
-ps = [0.050, 0.075, 0.10, 0.125, 0.15, 0.175, 0.20, 0,225, 0.25, 0.275, 0.300]
-# ps = [0.050, 0.075]
-# ts = [8, 16, 32]
+
+ps = [0.050, 0.100, 0.200, 0.300]
 num_graphs = 1000
 num_vertices = 20
 
-for n, g in enumerate(all_subgraphs):
-    print(names[n])
-    datasets = []
+datasets = []
 
-    for p in ps:
-        graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, g)
-        datasets.append((graph_db, classes, p, g))
+for p in ps:
+    for f in subgraphs:
+        graph_db, classes = create_random_graphs(num_graphs, num_vertices, p, -1, f)
+        datasets.append((graph_db, classes, p, f))
 
-    data = np.zeros([0, 3])
+results = []
+for (graph_db, classes, p, f) in datasets:
+    print(p)
+    gram_matrices = []
 
-    results = []
-    for (graph_db, classes, p, f) in datasets:
-        print(p)
-        gram_matrices = []
+    if len(np.unique(classes)) >= 2:
+        for i in range(num_it):
+            gram_matrix = compute_wl_f(graph_db, [f], i, induced=induced, compute_gram=False)
+            gram_matrix = normalize_feature_vector_dense(gram_matrix)
+            gram_matrices.append(gram_matrix)
 
-        if len(np.unique(classes)) >= 2:
-            for i in range(num_it):
-                gram_matrix = compute_wl_f(graph_db, [f], i, induced=induced, compute_gram=False)
-                gram_matrix = normalize_feature_vector_dense(gram_matrix)
-                gram_matrices.append(gram_matrix)
+        acc_train, std_train, acc_test, std_test, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes,
+                                                                                       num_iter=1000,
+                                                                                       num_repetitions=10,
+                                                                                       C=[10 ** 10], all=False)
 
-            # acc_train, std_train, acc_test, std_test, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
-            #                                                C=[10 ** 10])
+        print(p, acc_train, std_train, acc_test, std_test, mrg, mrg_std)
 
-            acc_train, acc_test, mrg = linear_svm_evaluation(gram_matrices, classes, num_iter=1000, num_repetitions=10,
-                                                             C=[10 ** 10], )
+        results.append([p, acc_train, std_train, acc_test, std_test, mrg, mrg_std])
 
-            # mrg = mrg.mean()
+    else:
+        print("SKIP!")
+    print("#")
+print("###")
 
-            acc_train = np.reshape(acc_train, [10, 1])
-            acc_test = np.reshape(acc_test, [10, 1])
-            # mrg = np.reshape(np.array([mrg] * 10), [10, 1])
-            mrg = np.reshape(mrg, [10, 1])
-            pss = np.reshape(np.array([p] * 10), [10, 1])
+for r in results:
+    print(r)
 
-            acc_diff = acc_train - acc_test
+results = []
 
-            matrix = np.concatenate([acc_diff, mrg, pss], axis=1)
+# 1-WL.
+for (graph_db, classes, p, f) in datasets:
+    print(p)
+    gram_matrices = []
 
-            data = np.concatenate([data, matrix], axis=0)
-        else:
-            print("SKIP!")
-        print("#")
-    print("###")
+    if len(np.unique(classes)) >= 2:
+        for i in range(num_it):
+            gram_matrix = compute_wl(graph_db, i, compute_gram=False)
+            gram_matrix = normalize_feature_vector_dense(gram_matrix)
+            gram_matrices.append(gram_matrix)
 
-    np.savetxt("data_wl_f_" + names[n] + ".csv", data, delimiter=",")
+        acc_train, std_train, acc_test, std_test, mrg, mrg_std = linear_svm_evaluation(gram_matrices, classes,
+                                                                                       num_iter=1000,
+                                                                                       num_repetitions=10,
+                                                                                       C=[10 ** 10], all=False)
 
-    #df = pd.DataFrame(data, columns=["Difference", "Margin", "p"])
+        print(p, acc_train, std_train, acc_test, std_test, mrg, mrg_std)
 
-    #g = sns.scatterplot(x="Margin", y="Difference", hue="p", data=df, palette=sns.color_palette("flare", as_cmap=True))
-    #g.set(xlabel="Margin $\lambda$", ylabel="Train - test accuracy [\%]", title=names[n])
+        results.append([p, acc_train, std_train, acc_test, std_test, mrg, mrg_std])
+    else:
+        print("SKIP!")
+    print("#")
 
-    #sns.move_legend(g, "upper right", title='$p$')
+print("###")
 
-    #plt.savefig('line_plot_' + names[n] + '.pdf', bbox_inches='tight')
-
-
+for r in results:
+    print(r)

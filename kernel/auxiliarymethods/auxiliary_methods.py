@@ -1,9 +1,7 @@
-import math as m
 import os.path as path
 
 import graph_tool as gt
 import numpy as np
-from scipy import sparse as sp
 
 
 def read_txt(ds_name):
@@ -105,4 +103,3 @@ def read_txt(ds_name):
     f.closed
 
     return graph_db, np.array(classes)
-

@@ -1,5 +1,5 @@
-import graph_tool as gt
 from graph_tool.all import *
+
 
 # Create cycle on n vertices.
 def create_cycle(n):
@@ -15,6 +15,7 @@ def create_cycle(n):
 
     return g
 
+
 # Create clique on n vertices.
 def create_clique(n):
     g = Graph(directed=False)
@@ -23,17 +24,7 @@ def create_clique(n):
         g.add_vertex()
 
     for i in range(n):
-        for j in range(i+1,n):
-            g.add_edge(i,j)
+        for j in range(i + 1, n):
+            g.add_edge(i, j)
 
     return g
-
-
-
-
-
-
-
-
-
-
